@@ -11,7 +11,8 @@ Arhitectura
 Diagrama de secvente:
 
 		Fereastra initiala:
-Client: - inregistrare : nume, prenume, nr de telefon, mail, username, parola
+Client:
+		- inregistrare : nume, prenume, nr de telefon, mail, username, parola
 		- autentificare : username si parola -> se schimba fereasta si userul va fi retinut pana la logout
 		
 		Fereastra user-autentificat:
