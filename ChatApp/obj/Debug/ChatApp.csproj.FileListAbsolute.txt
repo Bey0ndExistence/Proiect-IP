@@ -1,5 +1,4 @@
 D:\Facultate\An3_Sem2\IP\Proiect-IP\ChatApp\obj\Debug\ChatApp.csproj.AssemblyReference.cache
-D:\Facultate\An3_Sem2\IP\Proiect-IP\ChatApp\obj\Debug\SingleFormChatApp.Form1.resources
 D:\Facultate\An3_Sem2\IP\Proiect-IP\ChatApp\obj\Debug\ChatApp.Properties.Resources.resources
 D:\Facultate\An3_Sem2\IP\Proiect-IP\ChatApp\obj\Debug\ChatApp.csproj.GenerateResource.cache
 D:\Facultate\An3_Sem2\IP\Proiect-IP\ChatApp\obj\Debug\ChatApp.csproj.CoreCompileInputs.cache
@@ -8,3 +7,7 @@ D:\Facultate\An3_Sem2\IP\Proiect-IP\ChatApp\bin\Debug\ChatApp.exe
 D:\Facultate\An3_Sem2\IP\Proiect-IP\ChatApp\bin\Debug\ChatApp.pdb
 D:\Facultate\An3_Sem2\IP\Proiect-IP\ChatApp\obj\Debug\ChatApp.exe
 D:\Facultate\An3_Sem2\IP\Proiect-IP\ChatApp\obj\Debug\ChatApp.pdb
+D:\Facultate\An3_Sem2\IP\Proiect-IP\ChatApp\obj\Debug\ChatApp.Form1.resources
+D:\Facultate\An3_Sem2\IP\Proiect-IP\ChatApp\obj\Debug\ChatApp.ChatControl.resources
+D:\Facultate\An3_Sem2\IP\Proiect-IP\ChatApp\obj\Debug\ChatApp.RegisterControl.resources
+D:\Facultate\An3_Sem2\IP\Proiect-IP\ChatApp\obj\Debug\ChatApp.ActiveUserControl.resources
