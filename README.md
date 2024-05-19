@@ -1,4 +1,4 @@
-##Task-urie proiect IP - aplicatie tip chat
+## Task-urie proiect IP - aplicatie tip chat
 
 	Documentatie -> Marco 
  	UML ( diagrame clase,activitati,secvente, cazuri de utilizare) -> Rares
@@ -9,7 +9,7 @@
 	Arhitectura -> Rares
 
 
-##Diagrama de secvente:
+## Diagrama de secvente:
 
 	Fereastra initiala:
 		Client:
