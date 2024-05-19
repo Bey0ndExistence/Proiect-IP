@@ -3,12 +3,8 @@
   "WorkspaceRootPath": "D:\\Facultate\\An3_Sem2\\IP\\Proiect-IP\\ChatApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E1677073-14C8-4061-8DFF-ED83C9B1A0D4}|ChatApp.csproj|D:\\Facultate\\An3_Sem2\\IP\\Proiect-IP\\ChatApp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{E1677073-14C8-4061-8DFF-ED83C9B1A0D4}|ChatApp.csproj|d:\\facultate\\an3_sem2\\ip\\proiect-ip\\chatapp\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E1677073-14C8-4061-8DFF-ED83C9B1A0D4}|ChatApp.csproj|solutionrelative:form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E1677073-14C8-4061-8DFF-ED83C9B1A0D4}|ChatApp.csproj|D:\\Facultate\\An3_Sem2\\IP\\Proiect-IP\\ChatApp\\chatcontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E1677073-14C8-4061-8DFF-ED83C9B1A0D4}|ChatApp.csproj|solutionrelative:chatcontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E1677073-14C8-4061-8DFF-ED83C9B1A0D4}|ChatApp.csproj|D:\\Facultate\\An3_Sem2\\IP\\Proiect-IP\\ChatApp\\activeusercontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -17,6 +13,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{E1677073-14C8-4061-8DFF-ED83C9B1A0D4}|ChatApp.csproj|D:\\Facultate\\An3_Sem2\\IP\\Proiect-IP\\ChatApp\\logincontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E1677073-14C8-4061-8DFF-ED83C9B1A0D4}|ChatApp.csproj|solutionrelative:logincontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E1677073-14C8-4061-8DFF-ED83C9B1A0D4}|ChatApp.csproj|D:\\Facultate\\An3_Sem2\\IP\\Proiect-IP\\ChatApp\\chatcontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E1677073-14C8-4061-8DFF-ED83C9B1A0D4}|ChatApp.csproj|solutionrelative:chatcontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E1677073-14C8-4061-8DFF-ED83C9B1A0D4}|ChatApp.csproj|D:\\Facultate\\An3_Sem2\\IP\\Proiect-IP\\ChatApp\\registercontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -40,7 +40,7 @@
               "RelativeDocumentMoniker": "Form1.cs",
               "ToolTip": "D:\\Facultate\\An3_Sem2\\IP\\Proiect-IP\\ChatApp\\Form1.cs",
               "RelativeToolTip": "Form1.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAA8AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-19T12:28:39.443Z",
               "IsPinned": true,
@@ -54,7 +54,7 @@
               "RelativeDocumentMoniker": "RegisterControl.cs",
               "ToolTip": "D:\\Facultate\\An3_Sem2\\IP\\Proiect-IP\\ChatApp\\RegisterControl.cs",
               "RelativeToolTip": "RegisterControl.cs",
-              "ViewState": "AQIAAB4AAAAAAAAAAAAowC0AAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-19T12:34:48.502Z",
               "IsPinned": true,
@@ -62,13 +62,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "ChatControl.cs",
               "DocumentMoniker": "D:\\Facultate\\An3_Sem2\\IP\\Proiect-IP\\ChatApp\\ChatControl.cs",
               "RelativeDocumentMoniker": "ChatControl.cs",
               "ToolTip": "D:\\Facultate\\An3_Sem2\\IP\\Proiect-IP\\ChatApp\\ChatControl.cs",
               "RelativeToolTip": "ChatControl.cs",
-              "ViewState": "AQIAABIAAAAAAAAAAAAowCEAAAAJAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAcAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-19T12:51:47.796Z",
               "IsPinned": true,
@@ -76,13 +76,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "LoginControl.cs",
               "DocumentMoniker": "D:\\Facultate\\An3_Sem2\\IP\\Proiect-IP\\ChatApp\\LoginControl.cs",
               "RelativeDocumentMoniker": "LoginControl.cs",
               "ToolTip": "D:\\Facultate\\An3_Sem2\\IP\\Proiect-IP\\ChatApp\\LoginControl.cs",
               "RelativeToolTip": "LoginControl.cs",
-              "ViewState": "AQIAAAsAAAAAAAAAAAA7wBsAAAANAAAA",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAkwBQAAAAzAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-19T12:59:06.901Z",
               "IsPinned": true,
@@ -90,13 +90,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "ActiveUserControl.cs",
               "DocumentMoniker": "D:\\Facultate\\An3_Sem2\\IP\\Proiect-IP\\ChatApp\\ActiveUserControl.cs",
               "RelativeDocumentMoniker": "ActiveUserControl.cs",
               "ToolTip": "D:\\Facultate\\An3_Sem2\\IP\\Proiect-IP\\ChatApp\\ActiveUserControl.cs",
               "RelativeToolTip": "ActiveUserControl.cs",
-              "ViewState": "AQIAABUAAAAAAAAAAAAowCYAAAAVAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAvAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-19T13:04:53.924Z",
               "IsPinned": true,
