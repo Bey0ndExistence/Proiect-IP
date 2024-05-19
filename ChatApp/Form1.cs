@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ChatApp
@@ -15,6 +8,51 @@ namespace ChatApp
         public Form1()
         {
             InitializeComponent();
+
+            // Attach event handlers to the user controls
+            loginControl.LoginSuccessful += SwitchToActiveUsers;
+            loginControl.SwitchToRegister += SwitchToRegister;
+            registerControl.SwitchToLogin += SwitchToLogin;
+            activeUsersControl.SwitchToLogin += SwitchToLogin;
+            activeUsersControl.SwitchToChat += SwitchToChat;
+            chatControl.SwitchToActiveUsers += SwitchToActiveUsers;
+        }
+
+        private void SwitchToActiveUsers(object sender, EventArgs e)
+        {
+            // Show the active users control and hide all the other controls
+            loginControl.Visible = false;
+            activeUsersControl.Visible = true;
+            registerControl.Visible = false;
+            chatControl.Visible = false;
+        }
+
+        private void SwitchToRegister(object sender, EventArgs e)
+        {
+            // Show the register control and hide all the other controls
+            loginControl.Visible = false;
+            activeUsersControl.Visible = false;
+            registerControl.Visible = true;
+            chatControl.Visible = false;
+            registerControl.resetRegisterScreen();
+        }
+
+        private void SwitchToLogin(object sender, EventArgs e)
+        {
+            // Show the login control and hide all the other controls
+            loginControl.Visible = true;
+            activeUsersControl.Visible = false;
+            registerControl.Visible = false;
+            chatControl.Visible = false;
+            loginControl.resetLoginScreen();
+        }
+        private void SwitchToChat(object sender, EventArgs e)
+        {
+            // Show the chat control and hide all the other controls
+            loginControl.Visible = false;
+            activeUsersControl.Visible = false;
+            registerControl.Visible = false;
+            chatControl.Visible = true;
         }
     }
 }

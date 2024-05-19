@@ -2,15 +2,12 @@
 {
     partial class Form1
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
+        private LoginControl loginControl;
+        private RegisterControl registerControl;
+        private ChatControl chatControl;
+        private ActiveUserControl activeUsersControl;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,98 +17,57 @@
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.labelUsername = new System.Windows.Forms.Label();
-            this.labelPassword = new System.Windows.Forms.Label();
-            this.loginButton = new System.Windows.Forms.Button();
-            this.registerButton = new System.Windows.Forms.Button();
+            this.loginControl = new ChatApp.LoginControl();
+            this.registerControl = new ChatApp.RegisterControl();
+            this.chatControl = new ChatApp.ChatControl();
+            this.activeUsersControl = new ChatApp.ActiveUserControl(); // Add this line
             this.SuspendLayout();
             // 
-            // textBox1
+            // loginControl
             // 
-            this.textBox1.Location = new System.Drawing.Point(350, 175);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 0;
+            this.loginControl.Location = new System.Drawing.Point(0, 0);
+            this.loginControl.Name = "loginControl";
+            this.loginControl.Size = new System.Drawing.Size(800, 450);
+            this.loginControl.TabIndex = 0;
             // 
-            // textBox2
+            // registerControl
             // 
-            this.textBox2.Location = new System.Drawing.Point(350, 214);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 1;
+            this.registerControl.Location = new System.Drawing.Point(0, 0);
+            this.registerControl.Name = "registerControl";
+            this.registerControl.Size = new System.Drawing.Size(800, 450);
+            this.registerControl.TabIndex = 1;
+            this.registerControl.Visible = false;
             // 
-            // labelUsername
+            // chatControl
             // 
-            this.labelUsername.AutoSize = true;
-            this.labelUsername.Location = new System.Drawing.Point(374, 159);
-            this.labelUsername.Name = "labelUsername";
-            this.labelUsername.Size = new System.Drawing.Size(55, 13);
-            this.labelUsername.TabIndex = 2;
-            this.labelUsername.Text = "Username";
+            this.chatControl.Location = new System.Drawing.Point(0, 0);
+            this.chatControl.Name = "chatControl";
+            this.chatControl.Size = new System.Drawing.Size(800, 450);
+            this.chatControl.TabIndex = 2;
+            this.chatControl.Visible = false;
             // 
-            // labelPassword
+            // activeUsersControl
             // 
-            this.labelPassword.AutoSize = true;
-            this.labelPassword.Location = new System.Drawing.Point(374, 198);
-            this.labelPassword.Name = "labelPassword";
-            this.labelPassword.Size = new System.Drawing.Size(53, 13);
-            this.labelPassword.TabIndex = 3;
-            this.labelPassword.Text = "Password";
-            // 
-            // loginButton
-            // 
-            this.loginButton.Location = new System.Drawing.Point(363, 240);
-            this.loginButton.Name = "loginButton";
-            this.loginButton.Size = new System.Drawing.Size(75, 23);
-            this.loginButton.TabIndex = 4;
-            this.loginButton.Text = "Login";
-            this.loginButton.UseVisualStyleBackColor = true;
-            // 
-            // registerButton
-            // 
-            this.registerButton.Location = new System.Drawing.Point(363, 269);
-            this.registerButton.Name = "registerButton";
-            this.registerButton.Size = new System.Drawing.Size(75, 23);
-            this.registerButton.TabIndex = 5;
-            this.registerButton.Text = "Register";
-            this.registerButton.UseVisualStyleBackColor = true;
+            this.activeUsersControl.Location = new System.Drawing.Point(0, 0);
+            this.activeUsersControl.Name = "activeUsersControl";
+            this.activeUsersControl.Size = new System.Drawing.Size(800, 450);
+            this.activeUsersControl.TabIndex = 3;
+            this.activeUsersControl.Visible = false; // Set visible to false initially
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.registerButton);
-            this.Controls.Add(this.loginButton);
-            this.Controls.Add(this.labelPassword);
-            this.Controls.Add(this.labelUsername);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.loginControl);
+            this.Controls.Add(this.registerControl);
+            this.Controls.Add(this.chatControl);
+            this.Controls.Add(this.activeUsersControl); // Add activeUsersControl to the controls collection
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Chat Application";
             this.ResumeLayout(false);
-            this.PerformLayout();
-
         }
-
-        #endregion
-
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label labelUsername;
-        private System.Windows.Forms.Label labelPassword;
-        private System.Windows.Forms.Button loginButton;
-        private System.Windows.Forms.Button registerButton;
     }
 }
-
