@@ -1,14 +1,15 @@
-Task-urie proiect IP - aplicatie tip chat
+##Task-urie proiect IP - aplicatie tip chat
 
-	Documentatie + UML ( diagrame clase,activitati,secvente, cazuri de utilizare)
-	Interfata + callbacks
-	Baza de date
-	Server
-	Unit Test
-	Arhitectura
+	Documentatie -> Marco 
+ 	UML ( diagrame clase,activitati,secvente, cazuri de utilizare) -> Rares
+	Interfata + callbacks -> Marco
+	Baza de date - Molo
+	Server -> Zaco(Rares)
+	Unit Test -> Rares
+	Arhitectura -> Rares
 
 
-Diagrama de secvente:
+##Diagrama de secvente:
 
 	Fereastra initiala:
 		Client:
