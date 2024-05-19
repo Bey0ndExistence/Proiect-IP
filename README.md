@@ -19,8 +19,10 @@ Arhitectura -> **Rares**
 		- avem sus datele utilizatorului si buton de logout
 		- jos avem un box unde ne vor aparea utilizatorii care s-au conectat la server
 		- jos de tot avem un button de chat, putem selecta persoana din box cu care dorim sa initiem o conversatie
-		apasam pe el, si apasam dupa butonul CHAT, 
+		apasam pe el, si apasam dupa butonul CHAT,
+
 		Fereastra CHAT dintre 2 persoane, avem sus cu cine vorbim iar mai jos avem un chatbox unde apar mesajele
+
 		Log-ul cu chat-ul ramane la client intr-un fisier text. Cand se apasa pe CHAT se citeste din fisier istoricul conversatiei
 	- Server:
 		- Format mesaj: Sender|Receiver|Mesaj
