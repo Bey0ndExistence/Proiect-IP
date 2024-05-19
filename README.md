@@ -1,6 +1,6 @@
 ## Task-urie proiect IP - aplicatie tip chat
 
-	Documentatie -> **Marco** 
+	Documentatie - **Marco** 
  	UML ( diagrame clase,activitati,secvente, cazuri de utilizare) -> **Rares**
 	Interfata + callbacks -> **Marco**
 	Baza de date - **Molo**
