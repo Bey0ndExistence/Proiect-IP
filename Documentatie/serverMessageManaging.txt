@@ -69,7 +69,7 @@ Server: threads: - main: asculta la port si primeste clienti si face new thread 
 				 - requestThread: ia din requestQ si apeleaza intr-un nou thread functia de handler COR 
 				 - CORThread: rezolva requestul in functie de tipul sau si trimite raspunsul catre receiver
 				 
-	enum COR {register <= logout <= login <= chatMsg}
+	enum COR {logout <= register <= login <= chatMsg}
 	dictionar<string, Object> register {
 								tip: register,
 								body: dictionar<string, string>
