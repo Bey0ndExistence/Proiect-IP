@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Sockets;
 
 using MessageNamespace;
 
@@ -22,6 +23,6 @@ namespace ServerRequestHandler
             _next = next;
         }
 
-        public abstract void Handle(Message msg);
+        public abstract void Handle(Message msg, Dictionary<string, Socket> users);
     }
 }

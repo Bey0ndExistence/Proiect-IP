@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Sockets;
 
 using MessageNamespace;
 
@@ -12,7 +13,7 @@ namespace ServerRequestHandler
     {
         public LogInRequestHandler(RequestHandler next = null) : base(next) { }
 
-        public override void Handle(Message message)
+        public override void Handle(Message message, Dictionary<string, Socket> users)
         {
             if (message.Type == MessageType.Login)
             {
@@ -21,7 +22,7 @@ namespace ServerRequestHandler
             }
             else
             {
-                _next.Handle(message);
+                _next.Handle(message, users);
             }
         }
     }
