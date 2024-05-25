@@ -128,5 +128,11 @@
     </PackageReference>
     <PackageReference Include="System.Security.Permissions" Version="8.0.0" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DatabaseExceptions\DatabaseExceptions.csproj">
+      <Project>{6998bbe9-d3b9-42f6-a154-d1c33c75fa11}</Project>
+      <Name>DatabaseExceptions</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

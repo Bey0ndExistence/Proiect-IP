@@ -2,6 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using  Persistance.Exceptions;
+using System.Security.Cryptography;
+using System.Text;
+using ZstdSharp;
 
 namespace Persistance
 {
@@ -16,22 +20,22 @@ namespace Persistance
         // Static method to get the singleton instance
         public static DatabaseAccess Instance => _instance.Value;
 
-        // Static method to create the userdata table
-        public static bool CreateUserTable()
+      
+        public bool CreateUserTable()
         {
-            string connectionString = "server=localhost;uid=root;pwd=root;database=userdata";
+
             string createTableQuery = @"
                 CREATE TABLE IF NOT EXISTS userdata (
                     ID INT AUTO_INCREMENT PRIMARY KEY,
                     username CHAR(50) NOT NULL UNIQUE,
-                    password CHAR(50) NOT NULL,
+                    password VARCHAR(100) NOT NULL,
                     email CHAR(50) NOT NULL UNIQUE,
-                    firstname CHAR(50) NOT NULL,
-                    lastname CHAR(50) NOT NULL,
-                    phone_number CHAR(50) NOT NULL UNIQUE
+                    firstname CHAR(50),
+                    lastname CHAR(50),
+                    phone_number CHAR(50) UNIQUE
                 )";
 
-            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
                 try
                 {
@@ -45,14 +49,14 @@ namespace Persistance
                 }
                 catch (MySqlException ex)
                 {
-                    Console.WriteLine("An error occurred while creating the table: " + ex.Message);
-                    return false;
+                    throw new CreateTableException("An error occurred while creating the userdata table");
+                    
                 }
             }
         }
 
         // Existing methods and private helper methods...
-        public static bool CreateUsersLogs()
+        public  bool CreateUsersLogs()
         {
             string connectionString = "server=localhost;uid=root;pwd=root;database=userdata";
             string createTableQuery = @"
@@ -75,8 +79,7 @@ namespace Persistance
                 }
                 catch (MySqlException ex)
                 {
-                    Console.WriteLine("An error occurred while creating the table: " + ex.Message);
-                    return false;
+                    throw new CreateTableException("An error occurred while creating the userlogs table");
                 }
             }
         }
@@ -90,7 +93,8 @@ namespace Persistance
             }
             catch (MySqlException)
             {
-                return false;
+                throw new CreateTableException("An error occurred while connecting to userdata database");
+            
             }
         }
 
@@ -103,7 +107,20 @@ namespace Persistance
             }
             catch (MySqlException)
             {
-                return false;
+                throw new CreateTableException("An error occurred while disconnecting to userdata database");
+            }
+        }
+        private string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
             }
         }
 
@@ -112,17 +129,22 @@ namespace Persistance
             User user = new User
             {
                 Username = userDict["username"],
-                Password = userDict["password"],
+                Password = HashPassword(userDict["password"]),
                 Email = userDict["email"],
                 Firstname = userDict["firstname"],
                 Lastname = userDict["lastname"],
                 PhoneNumber = userDict["phone_number"]
             };
-
+           
             MySqlConnection connection;
-            if (!ConnectDB(out connection))
+         
+            try
             {
-                return false;
+                ConnectDB(out connection);
+            }
+            catch (DatabaseConnectionException ex)
+            {
+                throw new DatabaseConnectionException(ex.Message);
             }
 
             string query = "INSERT INTO userdata (username, password, email, firstname, lastname, phone_number) " +
@@ -142,9 +164,45 @@ namespace Persistance
                     cmd.ExecuteNonQuery();
                 }
                 catch (MySqlException)
+                { 
+                    throw new UserRegisterException(user.Password);
+
+                }
+            }
+
+            DisconnectDB(connection);
+            return true;
+        }
+        public bool DeleteUserInfo(string username)
+        {
+            string query = "DELETE FROM userdata WHERE username = @username";
+
+            MySqlConnection connection;
+            try
+            {
+                ConnectDB(out connection);
+            }
+            catch (DatabaseConnectionException ex)
+            {
+                throw new DatabaseConnectionException(ex.Message);
+            }
+
+            using (MySqlCommand cmd = new MySqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@username", username);
+
+                try
+                {
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected == 0)
+                    {
+                        throw new UserDeletionException("No rows were deleted for the user.", username);
+                    }
+                }
+                catch (MySqlException ex)
                 {
                     DisconnectDB(connection);
-                    return false;
+                    throw new UserDeletionException("An error occurred while deleting user information.", username);
                 }
             }
 
@@ -152,16 +210,60 @@ namespace Persistance
             return true;
         }
 
+        public bool UpdateUserInfo(string username, Dictionary<string, string> updatedFields)
+        {
+            StringBuilder setFields = new StringBuilder();
+            foreach (var field in updatedFields)
+            {
+                setFields.Append($"{field.Key} = @{field.Key}, ");
+            }
+            setFields.Length -= 2; // Remove the last comma and space
+
+            string query = $"UPDATE userdata SET {setFields} WHERE username = @username";
+
+            MySqlConnection connection;
+            try
+            {
+                ConnectDB(out connection);
+            }
+            catch (DatabaseConnectionException ex)
+            {
+                throw new DatabaseConnectionException(ex.Message);
+            }
+
+            using (MySqlCommand cmd = new MySqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@username", username);
+                foreach (var field in updatedFields)
+                {
+                    cmd.Parameters.AddWithValue($"@{field.Key}", field.Value);
+                }
+
+                try
+                {
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected == 0)
+                    {
+                        throw new UserUpdateException("No rows were updated for the user " + username);
+                    }
+                }
+                catch (MySqlException ex)
+                {
+                    DisconnectDB(connection);
+                    throw new UserUpdateException("An error occurred while updating user information for the user " + username);
+                }
+            }
+
+            DisconnectDB(connection);
+            return true;
+        }
         public Dictionary<string, string> GetUserInfo(string username, List<string> fields)
         {
             string selectFields = string.Join(", ", fields);
             string query = $"SELECT {selectFields} FROM userdata WHERE username = @username";
 
             MySqlConnection connection;
-            if (!ConnectDB(out connection))
-            {
-                return null;
-            }
+            ConnectDB(out connection);
 
             Dictionary<string, string> userInfo = new Dictionary<string, string>();
 
@@ -169,29 +271,43 @@ namespace Persistance
             {
                 cmd.Parameters.AddWithValue("@username", username);
 
-                using (MySqlDataReader reader = cmd.ExecuteReader())
+                try
                 {
-                    if (reader.Read())
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
-                        foreach (var field in fields)
+                        if (reader.Read())
                         {
-                            userInfo[field] = reader[field]?.ToString();
+                            foreach (var field in fields)
+                            {
+                                userInfo[field] = reader[field]?.ToString();
+                            }
+                        }
+                        else
+                        {
+                            throw new UserNotFoundException($"No information found for the user '{username}'.");
                         }
                     }
+                }
+                catch (MySqlException ex)
+                {
+                    throw new UserReadInformationException("An error occurred while retrieving user information.", username);
                 }
             }
 
             DisconnectDB(connection);
-
             return userInfo;
         }
 
         public string GetLogs(string username1, string username2)
         {
             MySqlConnection connection;
-            if (!ConnectDB(out connection))
+            try
             {
-                return null;
+                ConnectDB(out connection);
+            }
+            catch (DatabaseConnectionException ex)
+            {
+                throw new DatabaseConnectionException(ex.Message);
             }
 
             int id1 = GetUserId(username1, connection);
@@ -240,9 +356,13 @@ namespace Persistance
         public bool SaveLogs(string username1, string username2, string conversation)
         {
             MySqlConnection connection;
-            if (!ConnectDB(out connection))
+            try
             {
-                return false;
+                ConnectDB(out connection);
+            }
+            catch (DatabaseConnectionException ex)
+            {
+                throw new DatabaseConnectionException(ex.Message);
             }
 
             int id1 = GetUserId(username1, connection);
@@ -285,9 +405,13 @@ namespace Persistance
             string password = credentials["password"];
 
             MySqlConnection connection;
-            if (!ConnectDB(out connection))
+            try
             {
-                return false;
+                ConnectDB(out connection);
+            }
+            catch (DatabaseConnectionException ex)
+            {
+                throw new DatabaseConnectionException(ex.Message);
             }
 
             string query = "SELECT COUNT(*) FROM userdata WHERE username = @username AND password = @password";
@@ -296,15 +420,20 @@ namespace Persistance
             using (MySqlCommand cmd = new MySqlCommand(query, connection))
             {
                 cmd.Parameters.AddWithValue("@username", username);
-                cmd.Parameters.AddWithValue("@password", password);
+                cmd.Parameters.AddWithValue("@password", HashPassword(password));
 
                 isAuthenticated = Convert.ToInt32(cmd.ExecuteScalar()) > 0;
             }
 
             DisconnectDB(connection);
 
-            return isAuthenticated;
+            if(isAuthenticated)
+                return true;
+            else
+                throw new LoginException("Wrong credentials");
         }
+
+
 
         private int GetUserId(string username, MySqlConnection connection)
         {

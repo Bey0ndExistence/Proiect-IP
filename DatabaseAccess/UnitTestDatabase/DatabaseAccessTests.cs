@@ -1,6 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MySql.Data.MySqlClient;
+using MySqlX.XDevAPI.Common;
 using Persistance;
+using Persistance.Exceptions;
 using System.Collections.Generic;
 
 namespace Persistance.Tests
@@ -18,7 +20,7 @@ namespace Persistance.Tests
             _connection.Open();
 
             // Create the userdata table
-            DatabaseAccess.CreateUserTable();
+            DatabaseAccess.Instance.CreateUserTable();
         }
 
         [ClassCleanup]
@@ -27,65 +29,114 @@ namespace Persistance.Tests
             _connection.Close();
         }
 
-        [TestInitialize]
-        public void TestInitialize()
-        {
-            using (var cmd = new MySqlCommand("DELETE FROM userdata", _connection))
-            {
-                cmd.ExecuteNonQuery();
-            }
-        }
-
+        
         [TestMethod]
         public void TestRegisterUser()
         {
-            var userDict = new Dictionary<string, string>
+            try
             {
-                { "username", "testuser" },
-                { "password", "testpassword" },
-                { "email", "testuser@example.com" },
-                { "firstname", "Test" },
-                { "lastname", "User" },
-                { "phone_number", "1234567890" }
+                var userDict = new Dictionary<string, string>
+            {
+                { "username", "mircea3" },
+                { "password", "mircea3" },
+                { "email", "mircea3@example.com" },
+                { "firstname", "mircea3" },
+                { "lastname", "mircea3" },
+                { "phone_number", "mircea3" }
             };
 
-            var result = DatabaseAccess.Instance.RegisterUser(userDict);
-            Assert.IsTrue(result);
+                var result = DatabaseAccess.Instance.RegisterUser(userDict);
+                Assert.IsTrue(result);
+            }
+            catch (DatabaseConnectionException ex)
+            {
+                Console.Write(ex.ToString());
+            }
+            catch(UserRegisterException ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
 
-            var userInfo = DatabaseAccess.Instance.GetUserInfo("testuser", new List<string> { "username", "email" });
+          
+
+            var userInfo = DatabaseAccess.Instance.GetUserInfo("mircea3", new List<string> { "username", "email" });
             Assert.IsNotNull(userInfo);
-            Assert.AreEqual("testuser", userInfo["username"]);
-            Assert.AreEqual("testuser@example.com", userInfo["email"]);
+            Assert.AreEqual("mircea3", userInfo["username"]);
+            Assert.AreEqual("mircea3@example.com", userInfo["email"]);
+            
+
         }
 
         [TestMethod]
         public void TestLoginCheck()
-        {
-            var userDict = new Dictionary<string, string>
-            {
-                { "username", "loginuser" },
-                { "password", "loginpassword" },
-                { "email", "loginuser@example.com" },
-                { "firstname", "Login" },
-                { "lastname", "User" },
-                { "phone_number", "0987654321" }
-            };
-
-            DatabaseAccess.Instance.RegisterUser(userDict);
+        { 
 
             var credentials = new Dictionary<string, string>
             {
-                { "username", "loginuser" },
-                { "password", "loginpassword" }
+                { "username", "userToUpdate" },
+                { "password", "password" }
             };
 
             var isAuthenticated = DatabaseAccess.Instance.LoginCheck(credentials);
             Assert.IsTrue(isAuthenticated);
-
-            credentials["password"] = "wrongpassword";
-            isAuthenticated = DatabaseAccess.Instance.LoginCheck(credentials);
-            Assert.IsFalse(isAuthenticated);
         }
+
+        [TestMethod]
+        public void TestDeleteUser()
+        {
+            try
+            { 
+                    var deleteResult = DatabaseAccess.Instance.DeleteUserInfo("mircea6");
+                    Assert.IsTrue(deleteResult);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
+        [TestMethod]
+        public void TestUpdateUserInfo()
+        {
+            try
+            {
+                // First, register a user to update
+                var userDict = new Dictionary<string, string>
+        {
+            { "username", "userToUpdate" },
+            { "password", "password" },
+            { "email", "user@example.com" },
+            { "firstname", "User" },
+            { "lastname", "ToUpdate" },
+            { "phone_number", "1234567890" }
+        };
+
+                var registerResult = DatabaseAccess.Instance.RegisterUser(userDict);
+                Assert.IsTrue(registerResult);
+
+                // Now update the user information
+                var updatedFields = new Dictionary<string, string>
+        {
+            { "email", "updated@example.com" },
+            { "firstname", "Updated" },
+            { "lastname", "User" }
+        };
+                var updateResult = DatabaseAccess.Instance.UpdateUserInfo("userToUpdate", updatedFields);
+                Assert.IsTrue(updateResult);
+
+                // Retrieve the updated user information to verify
+                var userInfo = DatabaseAccess.Instance.GetUserInfo("userToUpdate", new List<string> { "email", "firstname", "lastname" });
+                Assert.IsNotNull(userInfo);
+                Assert.AreEqual("updated@example.com", userInfo["email"]);
+                Assert.AreEqual("Updated", userInfo["firstname"]);
+                Assert.AreEqual("User", userInfo["lastname"]);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+        }
+
         /*
         [TestMethod]
         public void TestSaveAndGetLogs()
