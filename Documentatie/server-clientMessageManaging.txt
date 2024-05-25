@@ -66,8 +66,8 @@ _______________________________________________________________________________
 												
 Server: threads: - main: asculta la port si primeste clienti si face new thread pentru fiecare client
 				 - clientThread: citeste mesajele de la client si le pune in requestQ
-				 - requestThread: ia din requestQ si apeleaza intr-un nou thread functia de handler COR 
-				 - CORThread: rezolva requestul in functie de tipul sau si trimite raspunsul catre receiver
+				 - CORThread: ia din requestQ si apeleaza functia de handler COR rezolva requestul
+								in functie de tipul sau si trimite raspunsul catre receiver
 				 
 	enum COR {logout <= register <= login <= chatMsg}
 	dictionar<string, Object> register {
