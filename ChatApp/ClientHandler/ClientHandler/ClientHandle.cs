@@ -35,7 +35,7 @@ namespace ClientHandle
             }
             finally
             {
-                _socket.Close();
+                //_socket.Close();
                 Console.WriteLine($"END");
             }
         }
@@ -107,7 +107,7 @@ namespace ClientHandle
             {
                 try
                 {
-                    _socket.Shutdown(SocketShutdown.Both);
+                    //_socket.Shutdown(SocketShutdown.Both);
                     _socket.Close();
                     Console.WriteLine("Connection closed.");
                 }

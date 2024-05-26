@@ -15,7 +15,9 @@ namespace MessageNamespace
         UpdateOnlineUsers,
         ErrorLogin,
         ChatMsg,
-        Logout
+        Logout,
+        ServerError,
+        UserNotFound
     }
 
     public class Message
@@ -50,7 +52,15 @@ namespace MessageNamespace
                 PropertyNameCaseInsensitive = true,
                 WriteIndented = true
             };
-            return JsonSerializer.Deserialize<Message>(json, options);
+            try
+            {
+                return JsonSerializer.Deserialize<Message>(json, options);
+            }
+            catch (JsonException e)
+            {
+                Console.WriteLine(e.Message);
+                return new Message(MessageType.ServerError, "", "", new Dictionary<string, string> { { "", "" } });
+            }
         }
     }
 }

@@ -21,8 +21,16 @@ namespace DummyClient
 
             var msgList = new List<Message>
             {
-                new Message(MessageType.ChatMsg, "Client1", "Client2", new Dictionary<string, string> { { "message", "Hello, Client2!" } }),
-                new Message(MessageType.ChatMsg, "Client1", "Client2", new Dictionary<string, string> { { "message", "Hello, Client2!" } }),
+                new Message(MessageType.Register, "Rares", "server", new Dictionary<string, string> {{ "username", "Rares" },
+                  { "password", "pass" },
+                  { "email", "Rares@mail" },
+                  { "firstname", "Test" },
+                  { "lastname", "User" },
+                  { "phone_number", "Rares" } }),
+                new Message(MessageType.Login, "Rares", "server", new Dictionary<string, string>{ { "username", "Rares" }, { "password", "pass" } }),
+                new Message(MessageType.ChatMsg, "Rares", "Rares", new Dictionary<string, string> { { "message", "Hello, Rares yo soi Rares!" } }),
+                new Message(MessageType.ChatMsg, "Rares", "Marco", new Dictionary<string, string> { { "message", "Hello, Marco yo soi Rares!" } }),
+                new Message(MessageType.Logout, "Rares", "sever", new Dictionary<string, string>{ })
                 /*new Message(MessageType.Register, "Client1", "server", new Dictionary<string, string> {{ "username", "username7" },
                   { "password", "pass" },
                   { "email", "username7" },
@@ -36,6 +44,7 @@ namespace DummyClient
 
             foreach (var message in msgList)
             {
+                Thread.Sleep(5000);
                 string messageJson = Message.ToJson(message);
                 byte[] messageBuffer = Encoding.UTF8.GetBytes(messageJson);
 

@@ -21,8 +21,17 @@ namespace DummyClient
 
             var msgList = new List<Message>
             {
-                new Message(MessageType.ChatMsg, "Client2", "Client1", new Dictionary<string, string> { { "message", "Hello, CLient1!" } }),
-                new Message(MessageType.ChatMsg, "Client2", "Client1", new Dictionary<string, string> { { "message", "Hello, Client1!" } }),
+                new Message(MessageType.Register, "Marco", "server", new Dictionary<string, string> {{ "username", "Marco" },
+                  { "password", "pass" },
+                  { "email", "Marco@mail" },
+                  { "firstname", "Test" },
+                  { "lastname", "User" },
+                  { "phone_number", "Marco" } }),
+                new Message(MessageType.Login, "Marco", "server", new Dictionary<string, string>{ { "username", "Marco" }, { "password", "pass" } }),
+                new Message(MessageType.ChatMsg, "Marco", "Marco", new Dictionary<string, string> { { "message", "Hello Marco, yo soy Marco!" } }),
+                new Message(MessageType.ChatMsg, "Marco", "Rares", new Dictionary<string, string> { { "message", "Hello, Rares, yo soi Marco!" } }),
+                new Message(MessageType.Logout, "Marco", "sever", new Dictionary<string, string>{ })
+                //new Message(MessageType.ChatMsg, "Client1", "Client1", new Dictionary<string, string> { { "message", "Hello, Client1!" } }),
                 /*new Message(MessageType.Register, "Client2", "server", new Dictionary<string, string> {{ "username", "username7" },
                   { "password", "pass" },
                   { "email", "username7" },
