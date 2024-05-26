@@ -21,21 +21,22 @@ namespace DummyClient
 
             var msgList = new List<Message>
             {
-                new Message(MessageType.ChatMsg, "Client1", "Client2", new Dictionary<string, string> { { "message", "Hello, Client2!" } }),
-                new Message(MessageType.ChatMsg, "Client1", "Client2", new Dictionary<string, string> { { "message", "Hello, Client2!" } }),
-                /*new Message(MessageType.Register, "Client1", "server", new Dictionary<string, string> {{ "username", "username7" },
+                new Message(MessageType.ChatMsg, "Client2", "Client1", new Dictionary<string, string> { { "message", "Hello, CLient1!" } }),
+                new Message(MessageType.ChatMsg, "Client2", "Client1", new Dictionary<string, string> { { "message", "Hello, Client1!" } }),
+                /*new Message(MessageType.Register, "Client2", "server", new Dictionary<string, string> {{ "username", "username7" },
                   { "password", "pass" },
                   { "email", "username7" },
                   { "firstname", "Test" },
                   { "lastname", "User" },
                   { "phone_number", "username7" } }),
-                new Message(MessageType.ChatMsg, "Client1", "Client1", new Dictionary<string, string> { { "message", "Hello, Server! Message 1" } }),
+                new Message(MessageType.ChatMsg, "Client2", "Client2", new Dictionary<string, string> { { "message", "Hello, Server! Message 1" } }),
                 new Message(MessageType.Login, "Client1", "server", new Dictionary<string, string>{ { "username", "Client1" }, { "password", "pass" } }),
                 new Message(MessageType.Logout, "Client1", "sever", new Dictionary<string, string>{ })*/
             };
 
             foreach (var message in msgList)
             {
+                Thread.Sleep(5000);
                 string messageJson = Message.ToJson(message);
                 byte[] messageBuffer = Encoding.UTF8.GetBytes(messageJson);
 
