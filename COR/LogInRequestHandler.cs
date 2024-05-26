@@ -19,6 +19,7 @@ namespace ServerRequestHandler
             {
                 Console.WriteLine($"Login Request Handle: Handling log in of {message.Sender} client to {message.Receiver}");
                 // resolve the request
+
             }
             else
             {

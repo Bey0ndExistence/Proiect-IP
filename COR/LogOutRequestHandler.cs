@@ -19,6 +19,7 @@ namespace ServerRequestHandler
             {
                 Console.WriteLine($"Logout Request handler: Handling logout of {message.Sender}");
                 // resolve the request
+
             }
             else
             {

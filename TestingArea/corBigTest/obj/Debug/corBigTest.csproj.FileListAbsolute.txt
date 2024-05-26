@@ -50,3 +50,4 @@ C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\Test
 C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\TestingArea\corBigTest\bin\Debug\MySql.Data.xml
 C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\TestingArea\corBigTest\bin\Debug\System.Diagnostics.DiagnosticSource.xml
 C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\TestingArea\corBigTest\bin\Debug\System.IO.Pipelines.xml
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\TestingArea\corBigTest\bin\Debug\DatabaseExceptions.dll

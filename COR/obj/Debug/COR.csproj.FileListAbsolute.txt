@@ -53,4 +53,5 @@ C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\COR\
 C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\COR\bin\Debug\System.Security.AccessControl.xml
 C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\COR\bin\Debug\System.Security.Permissions.xml
 C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\COR\bin\Debug\System.Security.Principal.Windows.xml
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\COR\bin\Debug\DatabaseExceptions.dll
 C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\COR\obj\Debug\COR.csproj.AssemblyReference.cache

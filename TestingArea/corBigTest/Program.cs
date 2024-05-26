@@ -41,45 +41,26 @@ namespace corBigTest
                 Thread clientThread = new Thread(() => HandleClient(clientSocket, chatHandler, users));
                 clientThread.Start();
             }
-
-            /*
-            Dictionary<string, Socket> users = new Dictionary<string, Socket> { { "user1", null }, { "user2", null } };
-
-            // Request Handlers
-            RegisterRequestHandler registerHandler = new RegisterRequestHandler();
-            MessageRequestHandler messageHandler = new MessageRequestHandler();
-
-            // request init
-            var userData = new Dictionary<string, string>
-              {
-                  { "username", "testuser7" },
-                  { "password", "testpassword" },
-                  { "email", "testuser7@example.com" },
-                  { "firstname", "Test" },
-                  { "lastname", "User" },
-                  { "phone_number", "12345678907" }
-              };
-            Message request = new Message(MessageType.Register, "testuser2", "server", userData);
-
-            // Request Handle
-            // registerHandler.Handle(request, users);
-            Console.Read();
-            */
         }
 
         static void HandleClient(Socket clientSocket, RequestHandler handler, Dictionary<string, Socket> users)
         {
             byte[] buffer = new byte[1024];
-            int receivedBytes = clientSocket.Receive(buffer);
-            string receivedText = Encoding.UTF8.GetString(buffer, 0, receivedBytes);
-            Message message = Message.FromJson(receivedText);
 
-            if (!users.ContainsKey(message.Sender))
+            while (true)
             {
-                users.Add(message.Sender, clientSocket);
-            }
+                int receivedBytes = clientSocket.Receive(buffer);
+                string receivedText = Encoding.UTF8.GetString(buffer, 0, receivedBytes);
+                Message message = Message.FromJson(receivedText);
 
-            handler.Handle(message, users);
+                if (!users.ContainsKey(message.Sender))
+                {
+                    users.Add(message.Sender, clientSocket);
+                }
+
+                Task.Run(() => handler.Handle(message, users));
+            }
+            
         }
     }
 }
