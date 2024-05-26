@@ -1,25 +1,30 @@
 Client: *daca nu se primeste raspuns dupa X secunde, se retrimite cererea
 
-	enum COR {registerResponse <= errorLogin <= updateOnlineUsers <= chatMsg}
+	enum COR {registerResponse <= errorLogin <= updateOnlineUsers <= serverError <= chatMsg}
 	dictionar<string, string> registerResponse {
 									tip: registerResponse
-									body: DB response
+									body: DB response (username/email/phone match or everything is OK)
 								}
 	dictionar<string, Object> updateOnlineUsers {
 									type: updateOnlineUsers,
-									body: onlineUsers: List<string>
+									body: onlineUsers: Dictionary<string, string>
 								}
 	
 	dictionar<string, string> errorLogin {
 							tip: registerResponse
-							body: DB response
+							body: DB response (username/password not match everything is OK)
 						}
 	dictionar<string, string> chatMsg {
 								tip: chatMsg,
 								senderUsername: type String,
 								receiverUsername: type String,
-								body: type String
+								body: type Dictionary<string, string>
 							}
+							
+	JSON serverError {
+				tip: serverError
+				body: server error: try restarting the app
+		}
 	
 	1. Register:- compleateaza datele in form
 	 		    - se apasa register si se trimite la server request de tipul register
@@ -43,7 +48,7 @@ Client: *daca nu se primeste raspuns dupa X secunde, se retrimite cererea
 			   - se da redirect la pagina de login
 			   dictionar<string, string> logout
 			   Request: dictionar<string, Object> logout
-			   Response: - 
+			   Response: broadcast dictionar<string, Object> updateOnlineUsers
 			   
 	5. Apasare eXit button: - se face punctul 4
 							- se inchide aplicatia
