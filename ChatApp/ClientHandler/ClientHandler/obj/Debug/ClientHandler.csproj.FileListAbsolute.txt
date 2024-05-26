@@ -1,0 +1,36 @@
+D:\AC_III_2\IP\Proiect IP\Cod\ClientHandler\ClientHandler\bin\Debug\ClientHandler.dll
+D:\AC_III_2\IP\Proiect IP\Cod\ClientHandler\ClientHandler\bin\Debug\ClientHandler.pdb
+D:\AC_III_2\IP\Proiect IP\Cod\ClientHandler\ClientHandler\bin\Debug\Message.dll
+D:\AC_III_2\IP\Proiect IP\Cod\ClientHandler\ClientHandler\obj\Debug\ClientHandler.csproj.AssemblyReference.cache
+D:\AC_III_2\IP\Proiect IP\Cod\ClientHandler\ClientHandler\obj\Debug\ClientHandler.csproj.CoreCompileInputs.cache
+D:\AC_III_2\IP\Proiect IP\Cod\ClientHandler\ClientHandler\obj\Debug\ClientHa.4F5A2954.Up2Date
+D:\AC_III_2\IP\Proiect IP\Cod\ClientHandler\ClientHandler\obj\Debug\ClientHandler.dll
+D:\AC_III_2\IP\Proiect IP\Cod\ClientHandler\ClientHandler\obj\Debug\ClientHandler.pdb
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\ClientHandler.dll
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\ClientHandler.pdb
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\obj\Debug\ClientHandler.csproj.AssemblyReference.cache
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\obj\Debug\ClientHandler.csproj.CoreCompileInputs.cache
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\obj\Debug\ClientHandler.csproj.CopyComplete
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\obj\Debug\ClientHandler.dll
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\obj\Debug\ClientHandler.pdb
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\Message.dll
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\System.Text.Json.dll
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\System.Memory.dll
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\System.ValueTuple.dll
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\System.Text.Encodings.Web.dll
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\System.Numerics.Vectors.dll
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\System.Buffers.dll
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\Message.pdb
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\Message.dll.config
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\System.Text.Json.xml
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\System.Memory.xml
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\System.ValueTuple.xml
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\System.Text.Encodings.Web.xml
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\System.Numerics.Vectors.xml
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\System.Threading.Tasks.Extensions.xml
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\System.Buffers.xml
+C:\Users\andre\OneDrive\Desktop\Materii\Anul_III\Semestrul_II\IP\Proiect-IP\ChatApp\ClientHandler\ClientHandler\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
