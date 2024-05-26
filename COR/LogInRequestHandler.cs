@@ -19,27 +19,42 @@ namespace ServerRequestHandler
         {
             if (message.Type == MessageType.Login)
             {
-                Console.WriteLine($"Login Request Handle: Handling log in of {message.Sender} client to {message.Receiver}");
-                // resolve the request
-                try
+                lock(users)
                 {
-                    if (DatabaseAccess.Instance.LoginCheck(message.Body))
+                    Console.WriteLine($"Login Request Handle: Handling log in of {message.Sender} client to {message.Receiver}");
+                    // resolve the request
+                    try
                     {
-                        Message response = new Message(MessageType.UpdateOnlineUsers, "", "", new Dictionary<string, string> { { "userList", string.Join(", ", users.Keys.ToList()) } });
-                        string responseJson = Message.ToJson(response);
-                        byte[] responseBuffer = Encoding.UTF8.GetBytes(responseJson);
-                        foreach (var userSocket in users.Values)
+                        if (DatabaseAccess.Instance.LoginCheck(message.Body))
                         {
-                            userSocket.Send(responseBuffer);
+                            Message response = new Message(MessageType.UpdateOnlineUsers, "", "", new Dictionary<string, string> { { "userList", string.Join(", ", users.Keys.ToList()) } });
+                            string responseJson = Message.ToJson(response);
+                            byte[] responseBuffer = Encoding.UTF8.GetBytes(responseJson);
+                            foreach (var userSocket in users.Values)
+                            {
+                                try
+                                {
+                                    userSocket.Send(responseBuffer);
+                                }
+                                catch (SocketException ex)
+                                {
+                                    Console.WriteLine($"SocketException while sending online users update: {ex.Message}");
+                                    SendErrorResponse(MessageType.ServerError, message.Sender, "Server is not responding... Try again later...", users);
+                                }
+                            }
                         }
                     }
+                    catch (LoginException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        SendErrorResponse(MessageType.ErrorLogin, message.Sender, "Invalid login credentials", users);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Exception: {e.Message}");
+                        SendErrorResponse(MessageType.ServerError, message.Sender, "An unexpected error occurred. Please try again later.", users);
+                    }
                 }
-                catch (LoginException e)
-                {
-                    Console.WriteLine(e.Message);
-                    // send request to 
-                }
-                
             }
             else
             {

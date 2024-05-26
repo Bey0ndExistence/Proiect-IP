@@ -20,6 +20,7 @@ namespace ServerRequestHandler
                 Console.WriteLine($"Logout Request Handler: Handling logout of {message.Sender}");
                 lock (users)
                 {
+                    //Console.WriteLine(string.Join(", ", users.Select(kv => $"{kv.Key}")));
                     if (users.ContainsKey(message.Sender))
                     {
                         try
@@ -35,6 +36,7 @@ namespace ServerRequestHandler
                             else
                             {
                                 Console.WriteLine("No users online!");
+                                return;
                             }
                         }
                         catch (Exception ex)
@@ -45,6 +47,8 @@ namespace ServerRequestHandler
                     else
                     {
                         Console.WriteLine($"User {message.Sender} not found in the users list.");
+                        //Console.WriteLine(string.Join(", ", users.Select(kv => $"{kv.Key}")));
+                        SendErrorResponse(MessageType.UserNotFound, message.Sender, "An unexpected error occurred. Please try again later.", users);
                     }
                 }
             }

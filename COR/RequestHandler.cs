@@ -24,5 +24,22 @@ namespace ServerRequestHandler
         }
 
         public abstract void Handle(Message msg, Dictionary<string, Socket> users);
+
+        protected static void SendErrorResponse(MessageType msgType, string sender, string errorMessage, Dictionary<string, Socket> users)
+        {
+            Message errorResponse = new Message(msgType, null, sender, new Dictionary<string, string> { { "Error message", errorMessage } });
+
+            if (users.ContainsKey(sender))
+            {
+                try
+                {
+                    users[sender].Send(Encoding.UTF8.GetBytes(Message.ToJson(errorResponse)));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Exception while sending error response: {e.Message}");
+                }
+            }
+        }
     }
 }
