@@ -49,16 +49,24 @@ namespace corBigTest
 
             while (true)
             {
-                int receivedBytes = clientSocket.Receive(buffer);
-                string receivedText = Encoding.UTF8.GetString(buffer, 0, receivedBytes);
-                Message message = Message.FromJson(receivedText);
-
-                if (!users.ContainsKey(message.Sender))
+                try
                 {
-                    users.Add(message.Sender, clientSocket);
-                }
+                    int receivedBytes = clientSocket.Receive(buffer);
+                    string receivedText = Encoding.UTF8.GetString(buffer, 0, receivedBytes);
+                    Message message = Message.FromJson(receivedText);
 
-                Task.Run(() => handler.Handle(message, users));
+                    if (!users.ContainsKey(message.Sender))
+                    {
+                        users.Add(message.Sender, clientSocket);
+                    }
+
+                    Task.Run(() => handler.Handle(message, users));
+                }
+                catch (SocketException e)
+                {
+                    Console.WriteLine(e.Message);
+                    return;
+                }
             }
             
         }

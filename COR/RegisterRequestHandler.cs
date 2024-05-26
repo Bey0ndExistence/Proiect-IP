@@ -34,7 +34,9 @@ namespace ServerRequestHandler
                     // Send the message
                     users[message.Sender].Send(messageBuffer);
                     Console.WriteLine($"Message sent to {message.Receiver}");
-                    //Console.WriteLine(RegisterUser2(message.Body));
+                    
+                    // removing the client after we temporarely stored him and his socket in usersList
+                    users.Remove(message.Sender);
                 }
                 catch (DatabaseConnectionException e)
                 {
@@ -59,7 +61,14 @@ namespace ServerRequestHandler
             }
             else
             {
-                _next.Handle(message, users);
+                try
+                {
+                    _next.Handle(message, users);
+                }
+                catch (ObjectDisposedException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
         }
     }
