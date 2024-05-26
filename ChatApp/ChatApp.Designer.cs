@@ -1,6 +1,6 @@
 ﻿namespace ChatApp
 {
-    partial class Form1
+    partial class ChatApp
     {
         private System.ComponentModel.IContainer components = null;
         private LoginControl loginControl;
@@ -19,10 +19,10 @@
 
         private void InitializeComponent()
         {
-            this.loginControl = new ChatApp.LoginControl();
-            this.registerControl = new ChatApp.RegisterControl();
-            this.chatControl = new ChatApp.ChatControl();
-            this.activeUsersControl = new ChatApp.ActiveUserControl(); // Add this line
+            this.loginControl = new global::ChatApp.LoginControl();
+            this.registerControl = new global::ChatApp.RegisterControl();
+            this.chatControl = new global::ChatApp.ChatControl();
+            this.activeUsersControl = new global::ChatApp.ActiveUserControl(); // Add this line
             this.SuspendLayout();
             // 
             // loginControl

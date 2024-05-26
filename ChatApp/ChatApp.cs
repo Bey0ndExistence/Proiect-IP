@@ -3,9 +3,9 @@ using System.Windows.Forms;
 
 namespace ChatApp
 {
-    public partial class Form1 : Form
+    public partial class ChatApp : Form
     {
-        public Form1()
+        public ChatApp()
         {
             InitializeComponent();
 

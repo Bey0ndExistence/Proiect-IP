@@ -7,6 +7,7 @@ namespace ChatApp
     {
         // Events to notify the main form about switching to login view
         public event EventHandler SwitchToActiveUsers;
+
         public ChatControl()
         {
             InitializeComponent();
@@ -20,6 +21,7 @@ namespace ChatApp
             {
                 listBoxMessages.Items.Add(message);
                 textBoxMessage.Clear();
+                //send over socket the message
             }
             else
             {
