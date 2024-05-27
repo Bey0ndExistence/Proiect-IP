@@ -80,9 +80,10 @@ namespace ChatApp
                 activeUsersControl.Visible = true;
                 registerControl.Visible = false;
                 chatControl.Visible = false;
-
                 _currentActiveUser = null;
                 _name = e.Username;
+
+                Invoke((Action)(() => activeUsersControl.updateLoggedUsername(_name)));
 
                 string[] users = msg.Body["userList"].Split(new string[] { ", " }, StringSplitOptions.None);
 
@@ -150,7 +151,7 @@ namespace ChatApp
         }
 
         /*private async void LogOutClicked(object sender, EventArgs e)
-        {
+        {   Cock and balls
             MessageBox.Show("Logging out");
             _client.LogOutMessage();
         }*/
@@ -197,6 +198,8 @@ namespace ChatApp
             activeUsersControl.Visible = false;
             registerControl.Visible = false;
             chatControl.Visible = true;
+            Invoke((Action)(() => chatControl.updateLoggedUsername(_name)));
+            Invoke((Action)(() => chatControl.updateChatPartnerUsername(_currentActiveUser)));
         }
 
         // Method II

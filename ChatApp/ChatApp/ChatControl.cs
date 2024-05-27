@@ -107,6 +107,14 @@ namespace ChatApp
                 MessageBox.Show("Chat history file does not exist.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        public void updateLoggedUsername(string username)
+        {
+            labelLoggedUsername.Text = "You are logged in as " + username;
+        }
 
+        public void updateChatPartnerUsername(string username)
+        {
+            labelChatUsername.Text = "You are chatting with " + username;
+        }
     }
 }

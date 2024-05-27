@@ -53,5 +53,10 @@ namespace ChatApp
             SwitchToLogin?.Invoke(this, EventArgs.Empty);
             LogOut?.Invoke(this, EventArgs.Empty);
         }
+
+        public void updateLoggedUsername(string username)
+        {
+            labelLoggedUsername.Text = "You are logged in as " + username;
+        }
     }
 }
