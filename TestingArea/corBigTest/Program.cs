@@ -85,6 +85,15 @@ namespace corBigTest
                             users.Add(message.Sender, clientSocket);
                             Console.WriteLine(string.Join(", ", users.Select(kv => $"{kv.Key}")));
                         }
+                        // aici a pus marco bazaconie
+                        else
+                        {
+                            if (message.Type == MessageType.Login)
+                            {
+                                Message msg = new Message(MessageType.ErrorLogin, "", message.Sender, new Dictionary<string, string> { { "Error message", "User deja autentificat!" } });
+                                clientSocket.Send(Encoding.UTF8.GetBytes(Message.ToJson(msg)));
+                            }
+                        }
                     }
 
                     messageQueue.Enqueue(message);

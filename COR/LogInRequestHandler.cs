@@ -47,13 +47,16 @@ namespace ServerRequestHandler
                     catch (LoginException e)
                     {
                         Console.WriteLine(e.Message);
-                        users.Remove(message.Sender);
                         SendErrorResponse(MessageType.ErrorLogin, message.Sender, "Invalid login credentials", users);
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine($"Exception: {e.Message}");
                         SendErrorResponse(MessageType.ServerError, message.Sender, "An unexpected error occurred. Please try again later.", users);
+                    }
+                    finally
+                    {
+                        users.Remove(message.Sender);
                     }
                 }
             }
