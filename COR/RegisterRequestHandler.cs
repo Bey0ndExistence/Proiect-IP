@@ -36,10 +36,12 @@ namespace ServerRequestHandler
 
                         // Send the message
                         users[message.Sender].Send(messageBuffer);
-                        Console.WriteLine($"Message sent to {message.Receiver}");
+                        Console.WriteLine($"Message sent to {message.Sender}");
 
                         // removing the client after we temporarely stored him and his socket in usersList
                         users.Remove(message.Sender);
+                        Console.WriteLine(users.Count);
+                        Console.WriteLine(users.Keys);
                     }
                     catch (DatabaseConnectionException e)
                     {
@@ -62,6 +64,8 @@ namespace ServerRequestHandler
                         string pattern = @"userdata\.(\w+)";
                         Match match = Regex.Match(e.Message, pattern);
                         SendErrorResponse(MessageType.RegisterResponse, message.Sender, $"{match.Groups[1].Value} already in use", users);
+                        users.Remove(message.Sender);
+                        Console.WriteLine(users.Count);
                     }
                     catch (Exception e)
                     {

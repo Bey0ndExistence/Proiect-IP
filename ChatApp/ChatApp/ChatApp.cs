@@ -4,6 +4,7 @@ using System.Windows.Forms;
 namespace ChatApp
 {
     using ClientHandle;
+    using MessageNamespace;
 
     public partial class ChatApp : Form
     {
@@ -29,7 +30,7 @@ namespace ChatApp
             activeUsersControl.SendActiveUser += GetActiveUser;
             chatControl.SendMessage += SendMessageClicked;
             registerControl.RegisterDataSend += RegisterDataSendClicked;
-            activeUsersControl.LogOut += LogOutClicked;
+            activeUsersControl.LogOut += LogOutDataSendClicked;
 
             _ip = "127.0.0.1";
             _port = 5678;
@@ -89,21 +90,32 @@ namespace ChatApp
             _client = new ClientHandle(name);
             _client.Start(_ip, _port);
             _client.RegisterMessage(e.Data);
+            Message msg = await _client.RegisterResponse();
+            if (msg.Type == MessageType.Register)
+            {
+                MessageBox.Show("User Created Successfuly");
+            }
+            else
+            {
+                MessageBox.Show($"Error creating account: {msg.Body["Error message"]}");
+            }
+            //MessageBox.Show($"------\n{msg.Type} \n {msg.Body.Values}\n------");
             _client.Close();
-            MessageBox.Show("Send Register Request");
+            /*MessageBox.Show("Send Register Request");*/
         }
 
         private async void LogOutDataSendClicked(object sender, EventArgs e)
         {
             _client.LogOutMessage();
             MessageBox.Show("Send Log Out Request");
+            _client.Close();
         }
 
-        private async void LogOutClicked(object sender, EventArgs e)
+        /*private async void LogOutClicked(object sender, EventArgs e)
         {
             MessageBox.Show("Logging out");
             _client.LogOutMessage();
-        }
+        }*/
 
         private void SwitchToActiveUsers(object sender, EventArgs e)
         {

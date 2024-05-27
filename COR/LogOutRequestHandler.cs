@@ -11,6 +11,7 @@ namespace ServerRequestHandler
 {
     public class LogOutRequestHandler : RequestHandler
     {
+        static string TAG = "LOG OUT REQUEST HANDLER";
         public LogOutRequestHandler(RequestHandler next = null) : base(next) { }
 
         public override void Handle(Message message, Dictionary<string, Socket> users)
@@ -25,7 +26,9 @@ namespace ServerRequestHandler
                     {
                         try
                         {
-                            users[message.Sender].Close();
+                            // users[message.Sender].Close();
+                            //users[message.Sender].Shutdown(SocketShutdown.Both);
+                            HandleClientDisconnection(users[message.Sender]);
                             users.Remove(message.Sender);
                             Console.WriteLine($"User {message.Sender} has been logged out and removed from the users list.");
 
@@ -75,6 +78,29 @@ namespace ServerRequestHandler
                 {
                     Console.WriteLine($"Error sending updated user list to {userSocket.RemoteEndPoint}: {ex.Message}");
                 }
+            }
+        }
+
+        public void HandleClientDisconnection(Socket clientSocket)
+        {
+            try
+            {
+                // Shut down the socket to signal that no more data will be sent or received
+                clientSocket.Shutdown(SocketShutdown.Both);
+            }
+            catch (SocketException ex)
+            {
+                Console.WriteLine($"SocketException during shutdown: {ex.Message}");
+            }
+            catch (ObjectDisposedException ex)
+            {
+                Console.WriteLine($"ObjectDisposedException during shutdown: {ex.Message}");
+            }
+            finally
+            {
+                // Close the socket and release all resources
+                clientSocket.Close();
+                Console.WriteLine("Socket closed successfully.");
             }
         }
     }

@@ -107,8 +107,8 @@ namespace ClientHandle
             {
                 try
                 {
-                    //_socket.Shutdown(SocketShutdown.Both);
-                    _socket.Close();
+                    _socket.Shutdown(SocketShutdown.Both);
+                    
                     Console.WriteLine("Connection closed.");
                 }
                 catch (ObjectDisposedException e)
@@ -125,7 +125,8 @@ namespace ClientHandle
                 }
                 finally
                 {
-                    _socket = null;
+                    _socket.Close();
+                    // _socket = null;
                 }
             }
         }
@@ -148,6 +149,13 @@ namespace ClientHandle
             return message.Type != MessageType.ErrorLogin;
         }
 
+        public async Task<Message> RegisterResponse()
+        {
+            Message message = await GetNextMessage();
+            Console.WriteLine(message.Type);
+            return message;
+        }
+
         public void RegisterMessage(Dictionary<string, string> data)
         {
             Message registerMessage = new Message(MessageType.Register, _username, "Server", data);
@@ -157,7 +165,7 @@ namespace ClientHandle
         {
             Message logOutMessage = new Message(MessageType.Logout, _username, "", new Dictionary<string, string> { { "", ""} });
             SendMessage(logOutMessage);
-            Close();
+            // Close();
         }
         public void LogInMessage(string username, string password)
         {

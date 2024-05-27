@@ -59,7 +59,11 @@ namespace corBigTest
                 try
                 {
                     int receivedBytes = clientSocket.Receive(buffer);
-                    if (receivedBytes == 0) break; // Client disconnected
+                    if (receivedBytes == 0)
+                    {
+                        Console.WriteLine($"received 0 bytes");
+                        break; // Client disconnected
+                    }
 
                     string receivedText = Encoding.UTF8.GetString(buffer, 0, receivedBytes);
                     Message message;
@@ -88,6 +92,7 @@ namespace corBigTest
                 }
                 catch (SocketException e)
                 {
+                    Console.WriteLine($"ia de aici tata");
                     Console.WriteLine($"SocketException: {e.Message}");
                     break;
                 }
