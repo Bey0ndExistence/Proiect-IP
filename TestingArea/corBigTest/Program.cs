@@ -90,6 +90,7 @@ namespace corBigTest
                         {
                             if (message.Type == MessageType.Login)
                             {
+
                                 Message msg = new Message(MessageType.ErrorLogin, "", message.Sender, new Dictionary<string, string> { { "Error message", "User deja autentificat!" } });
                                 clientSocket.Send(Encoding.UTF8.GetBytes(Message.ToJson(msg)));
                             }

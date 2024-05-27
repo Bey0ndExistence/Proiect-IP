@@ -48,15 +48,15 @@ namespace ServerRequestHandler
                     {
                         Console.WriteLine(e.Message);
                         SendErrorResponse(MessageType.ErrorLogin, message.Sender, "Invalid login credentials", users);
+                        if (users.ContainsKey(message.Sender))
+                            users.Remove(message.Sender);
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine($"Exception: {e.Message}");
                         SendErrorResponse(MessageType.ServerError, message.Sender, "An unexpected error occurred. Please try again later.", users);
-                    }
-                    finally
-                    {
-                        users.Remove(message.Sender);
+                        if (users.ContainsKey(message.Sender))
+                            users.Remove(message.Sender);
                     }
                 }
             }

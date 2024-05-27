@@ -64,7 +64,26 @@ namespace ChatApp
             _client.LogInMessage(e.Username, e.Password);
             MessageBox.Show("Send Log In Request");
 
-            bool isOK = await _client.IsOKResponse();
+            Message msg = await _client.GetServerResponse();
+            if (msg.Type == MessageType.UpdateOnlineUsers)
+            {
+                Console.WriteLine("Eroare: NU");
+                loginControl.Visible = false;
+                activeUsersControl.Visible = true;
+                registerControl.Visible = false;
+                chatControl.Visible = false;
+
+                _currentActiveUser = null;
+                MessageBox.Show("User Loged In Successfuly");
+            }
+            else
+            {
+                MessageBox.Show($"Error creating account: {msg.Body["Error message"]}");
+                _client.Close();
+            }
+            //MessageBox.Show($"------\n{msg.Type} \n {msg.Body.Values}\n------");
+
+            /*bool isOK = await _client.IsOKResponse();
             if (isOK)
             {
                 Console.WriteLine("Eroare: NU");
@@ -80,7 +99,7 @@ namespace ChatApp
             {
                 Console.WriteLine("Eroare: DA");
                 MessageBox.Show("Login failed. Please check your credentials.");
-            }
+            }*/
         }
 
         private async void RegisterDataSendClicked(object sender, UserRegisterDataEventArgs e)
@@ -90,7 +109,7 @@ namespace ChatApp
             _client = new ClientHandle(name);
             _client.Start(_ip, _port);
             _client.RegisterMessage(e.Data);
-            Message msg = await _client.RegisterResponse();
+            Message msg = await _client.GetServerResponse();
             if (msg.Type == MessageType.Register)
             {
                 MessageBox.Show("User Created Successfuly");

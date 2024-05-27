@@ -149,7 +149,7 @@ namespace ClientHandle
             return message.Type != MessageType.ErrorLogin;
         }
 
-        public async Task<Message> RegisterResponse()
+        public async Task<Message> GetServerResponse()
         {
             Message message = await GetNextMessage();
             Console.WriteLine(message.Type);
