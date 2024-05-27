@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace ChatApp
@@ -11,6 +12,8 @@ namespace ChatApp
 
         public event EventHandler<string> SendActiveUser;
         public event EventHandler LogOut;
+
+        public event EventHandler LoadChat;
 
         private string selectedActiveUser; // Field to store the selected active user
 
@@ -38,13 +41,12 @@ namespace ChatApp
 
         private void buttonChatWithActiveUser_Click(object sender, EventArgs e)
         {
+            SendActiveUser?.Invoke(this, selectedActiveUser);
+            LoadChat?.Invoke(this, EventArgs.Empty);
             // Raise the SwitchToChat event
             SwitchToChat?.Invoke(this, EventArgs.Empty);
-            SendActiveUser?.Invoke(this, selectedActiveUser);
             //Console.WriteLine($"User selected: {selectedActiveUser}");
         }
-
-
         private void buttonActiveUsersExit_Click(object sender, EventArgs e)
         {
             // Raise the SwitchToLogin event

@@ -5,6 +5,7 @@ namespace ChatApp
 {
     using ClientHandle;
     using MessageNamespace;
+    using System.IO;
     using System.Threading.Tasks;
 
     public partial class ChatApp : Form
@@ -34,9 +35,12 @@ namespace ChatApp
             registerControl.RegisterDataSend += RegisterDataSendClicked;
             activeUsersControl.LogOut += LogOutDataSendClicked;
 
+            chatControl.SaveChat += SaveToFile;
+            activeUsersControl.LoadChat += LoadFromFile;
+
             _ip = "127.0.0.1";
             _port = 5678;
-            _name = "Client 1";
+            _name = "anonimushihihihaaaa";
             /*_client = new ClientHandle(_name);
             _client.Start(_ip, _port);
 */
@@ -78,6 +82,7 @@ namespace ChatApp
                 chatControl.Visible = false;
 
                 _currentActiveUser = null;
+                _name = e.Username;
 
                 string[] users = msg.Body["userList"].Split(new string[] { ", " }, StringSplitOptions.None);
 
@@ -219,6 +224,26 @@ namespace ChatApp
                 await Task.Delay(100);
             }
             Console.WriteLine("Pooling messages finished");
+        }
+
+        /*public static void AddMessageToListBox(string sender, string message, ListBox listBox)
+        {
+            string formattedMessage = $"[{sender}]: {message}\n";
+            listBox.Items.Add(formattedMessage);
+        }*/
+
+        // Function to save ListBox content to a file
+        private void SaveToFile(object sender, EventArgs e)
+        {
+            Console.WriteLine($"{_name}-{_currentActiveUser}.txt");
+            Invoke((Action)(() =>
+                    chatControl.SaveListBoxToFile(_name, _currentActiveUser)));
+        }
+        private void LoadFromFile(object sender, EventArgs e)
+        {
+            Console.WriteLine($"{_name}-{_currentActiveUser}.txt");
+            Invoke((Action)(() =>
+                    chatControl.LoadListBoxFromFile(_name, _currentActiveUser)));
         }
     }
 }
