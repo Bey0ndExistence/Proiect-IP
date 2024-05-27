@@ -47,6 +47,7 @@ namespace ServerRequestHandler
                     catch (LoginException e)
                     {
                         Console.WriteLine(e.Message);
+                        users.Remove(message.Sender);
                         SendErrorResponse(MessageType.ErrorLogin, message.Sender, "Invalid login credentials", users);
                     }
                     catch (Exception e)
