@@ -11,7 +11,8 @@ namespace ChatApp
         public event EventHandler SwitchToActiveUsers;
 
         public event EventHandler<string> SendMessage;
-
+/*        public event EventHandler<string> ReceiveMessage;
+*/
         public ChatControl()
         {
             InitializeComponent();
@@ -39,6 +40,12 @@ namespace ChatApp
         {
             // Raise the SwitchToLogin event
             SwitchToActiveUsers?.Invoke(this, EventArgs.Empty);
+        }
+        public void ReceiveMessage(string sender, string message)
+        {
+            string s = $"{sender}:{message}";
+            listBoxMessages.Items.Add(s);
+            Console.WriteLine($"Message received: {s}");
         }
     }
 }

@@ -203,7 +203,7 @@ namespace ChatApp
                 Message msg = await _client.GetServerResponse();
                 if (msg.Type == MessageType.UpdateOnlineUsers)
                 {
-                    Invoke(new Action(() =>
+                    Invoke((Action)(() =>
                     {
                         string[] users = msg.Body["userList"].Split(new string[] { ", " }, StringSplitOptions.None);
                         activeUsersControl.UpdateActiveUsers(users);
@@ -212,12 +212,13 @@ namespace ChatApp
                 else
                 if (msg.Type == MessageType.ChatMsg)
                 {
-                    MessageBox.Show($"{msg.Body["message"]}");
+                    Invoke((Action)(() => 
+                    chatControl.ReceiveMessage(msg.Sender, msg.Body["message"])));
+                    //MessageBox.Show($"{msg.Body["message"]}");
                 }
                 await Task.Delay(100);
             }
             Console.WriteLine("Pooling messages finished");
         }
     }
-
 }

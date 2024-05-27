@@ -41,6 +41,7 @@ namespace ChatApp
             // Raise the SwitchToChat event
             SwitchToChat?.Invoke(this, EventArgs.Empty);
             SendActiveUser?.Invoke(this, selectedActiveUser);
+            //Console.WriteLine($"User selected: {selectedActiveUser}");
         }
 
 
