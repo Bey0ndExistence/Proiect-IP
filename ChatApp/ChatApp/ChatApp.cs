@@ -5,6 +5,7 @@ namespace ChatApp
 {
     using ClientHandle;
     using MessageNamespace;
+    using System.Threading.Tasks;
 
     public partial class ChatApp : Form
     {
@@ -13,6 +14,7 @@ namespace ChatApp
         string _name;
         ClientHandle _client;
         string _currentActiveUser;
+        bool _loggedIn;
 
         public ChatApp()
         {
@@ -39,6 +41,7 @@ namespace ChatApp
             _client.Start(_ip, _port);
 */
             _currentActiveUser = null;
+            _loggedIn = false;
         }
 
         private void GetActiveUser(object sender, string e)
@@ -59,6 +62,7 @@ namespace ChatApp
         private async void LogInDataSendClicked(object sender, UserCredentialsEventArgs e)
         {
             _client = new ClientHandle(e.Username);
+            // _client.MessageReceived += OnMessageReceived; // Subscribe to the event
             _client.Start(_ip, _port);
 
             _client.LogInMessage(e.Username, e.Password);
@@ -74,7 +78,15 @@ namespace ChatApp
                 chatControl.Visible = false;
 
                 _currentActiveUser = null;
+
+                string[] users = msg.Body["userList"].Split(new string[] { ", " }, StringSplitOptions.None);
+
+                activeUsersControl.UpdateActiveUsers(users);
                 MessageBox.Show("User Loged In Successfuly");
+
+                _loggedIn = true;
+                // Start polling for messages
+                Task.Run(() => PollMessages());
             }
             else
             {
@@ -107,6 +119,7 @@ namespace ChatApp
             string name;
             e.Data.TryGetValue("username", out name);
             _client = new ClientHandle(name);
+            // _client.MessageReceived += OnMessageReceived; // Subscribe to the event
             _client.Start(_ip, _port);
             _client.RegisterMessage(e.Data);
             Message msg = await _client.GetServerResponse();
@@ -127,6 +140,7 @@ namespace ChatApp
         {
             _client.LogOutMessage();
             MessageBox.Show("Send Log Out Request");
+            _loggedIn = false;
             _client.Close();
         }
 
@@ -178,6 +192,31 @@ namespace ChatApp
             activeUsersControl.Visible = false;
             registerControl.Visible = false;
             chatControl.Visible = true;
+        }
+
+        // Method II
+        private async Task PollMessages()
+        {
+            Console.WriteLine("Pooling messages...");
+            while (_loggedIn)
+            {
+                Message msg = await _client.GetServerResponse();
+                if (msg.Type == MessageType.UpdateOnlineUsers)
+                {
+                    Invoke(new Action(() =>
+                    {
+                        string[] users = msg.Body["userList"].Split(new string[] { ", " }, StringSplitOptions.None);
+                        activeUsersControl.UpdateActiveUsers(users);
+                    }));
+                }
+                else
+                if (msg.Type == MessageType.ChatMsg)
+                {
+                    MessageBox.Show($"{msg.Body["message"]}");
+                }
+                await Task.Delay(100);
+            }
+            Console.WriteLine("Pooling messages finished");
         }
     }
 

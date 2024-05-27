@@ -16,6 +16,8 @@ namespace ClientHandle
         private bool _running;
         private ConcurrentQueue<string> _receivedMessages;
 
+        // maybe for msg recived handler
+        // public event EventHandler<Message> MessageReceived;
         public ClientHandle(string username)
         {
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -82,7 +84,11 @@ namespace ClientHandle
                     {
                         string responseText = Encoding.UTF8.GetString(buffer, 0, receivedBytes);
                         Console.WriteLine($"Received: {responseText}");
-                        
+
+                        // maybe for msg recived handler
+                        /*var message = Message.FromJson(responseText);
+                        MessageReceived?.Invoke(this, message);*/
+
                         _receivedMessages.Enqueue(responseText);
                     }
                 }
@@ -180,5 +186,11 @@ namespace ClientHandle
             Message chatMessage = new Message(MessageType.ChatMsg, _username, to, new Dictionary<string, string> { { "message", messageContent } });
             SendMessage(chatMessage);
         }
+
+        // Method II
+        /*public bool TryDequeueMessage(out Message message)
+        {
+            return _receivedMessages.TryDequeue(out message);
+        }*/
     }
 }

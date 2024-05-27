@@ -74,6 +74,10 @@ namespace ChatApp
                 chatControl.Visible = false;
 
                 _currentActiveUser = null;
+
+                string[] users = msg.Body["userList"].Split(new string[] { ", " }, StringSplitOptions.None);
+
+                activeUsersControl.UpdateActiveUsers(users);
                 MessageBox.Show("User Loged In Successfuly");
             }
             else
