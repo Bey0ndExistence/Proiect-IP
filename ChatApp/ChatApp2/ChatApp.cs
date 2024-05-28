@@ -62,6 +62,9 @@ namespace ChatApp
                 _client.ChatMessage(_currentActiveUser, e);
             }
             MessageBox.Show("Send Message Request");
+            // new method
+            Invoke((Action)(() =>
+                    chatControl.LoadListBoxFromFile(_name, _currentActiveUser)));
         }
 
         private async void LogInDataSendClicked(object sender, UserCredentialsEventArgs e)
