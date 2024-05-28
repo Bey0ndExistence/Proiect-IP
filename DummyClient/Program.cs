@@ -21,15 +21,18 @@ namespace DummyClient
 
             var msgList = new List<Message>
             {
-                new Message(MessageType.Register, "Rares", "server", new Dictionary<string, string> {{ "username", "Rares" },
+                /*new Message(MessageType.Register, "Rares", "server", new Dictionary<string, string> {{ "username", "Rares" },
                   { "password", "pass" },
                   { "email", "Rares@mail" },
                   { "firstname", "Test" },
                   { "lastname", "User" },
-                  { "phone_number", "Rares" } }),
+                  { "phone_number", "Rares" } }),*/
                 new Message(MessageType.Login, "Rares", "server", new Dictionary<string, string>{ { "username", "Rares" }, { "password", "pass" } }),
-                new Message(MessageType.ChatMsg, "Rares", "Rares", new Dictionary<string, string> { { "message", "Hello, Rares yo soi Rares!" } }),
+                //new Message(MessageType.ChatMsg, "Rares", "Rares", new Dictionary<string, string> { { "message", "Hello, Rares yo soi Rares!" } }),
                 new Message(MessageType.ChatMsg, "Rares", "Marco", new Dictionary<string, string> { { "message", "Hello, Marco yo soi Rares!" } }),
+                new Message(MessageType.ChatMsg, "Rares", "Molo", new Dictionary<string, string> { { "message", "Hello, Molo yo soi Rares!" } }),
+                new Message(MessageType.ChatMsg, "Rares", "Marco", new Dictionary<string, string> { { "message", "Hello, Marco yo soi Rares!" } }),
+                new Message(MessageType.ChatMsg, "Rares", "Molo", new Dictionary<string, string> { { "message", "Hello, Molo yo soi Rares!" } }),
                 new Message(MessageType.Logout, "Rares", "sever", new Dictionary<string, string>{ })
                 /*new Message(MessageType.Register, "Client1", "server", new Dictionary<string, string> {{ "username", "username7" },
                   { "password", "pass" },
