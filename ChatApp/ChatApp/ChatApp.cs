@@ -87,6 +87,32 @@ namespace ChatApp
             Invoke((Action)(() =>
                     chatControl.LoadListBoxFromFile(_name, _currentActiveUser)));
         }
+        /// <summary>
+        /// Handles the event when the ChatApp form is closing. Prompts the user to confirm closing the application and logs out the user if logged in.
+        /// </summary>
+        /// <param name="sender">The sender of the event.</param>
+        /// <param name="e">The FormClosingEventArgs object containing event data.</param>
+        private void ChatApp_Closing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult result = MessageBox.
+                Show("Are you sure you want to close the application?", "Confirm Close",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.No)
+            {
+                // If the user chooses "No", cancel the form closing
+                e.Cancel = true;
+            }
+
+            if (_loggedIn)
+            {
+                _client.LogOutMessage();
+                MessageBox.Show("Send Log Out Request");
+                _loggedIn = false;
+                _client.Close();
+            }
+
+        }
 
         /// <summary>
         /// Event handler for logging in the user.
