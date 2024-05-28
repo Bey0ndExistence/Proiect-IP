@@ -1,4 +1,10 @@
-﻿using System;
+﻿/// <file>
+/// <author>Andrei Zacordoneț</author>
+/// <summary>
+/// This file contains the implementation of the Server class, which handles client connections and processes messages.
+/// </summary>
+/// </file>
+using System;
 using System.Collections.Generic;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -15,11 +21,15 @@ using MySql.Data.MySqlClient;
 
 namespace ServerNamespace
 {
-    public class Server
+    /// <summary>
+    /// Represents a server that handles client connections and processes messages.
+    /// </summary>
+    public class Server : IServer
     {
         private ConcurrentQueue<Message> messageQueue = new ConcurrentQueue<Message>();
         private AutoResetEvent messageEvent = new AutoResetEvent(false);
         private Socket serverSocket;
+        private int portNumber;
         private Dictionary<string, Socket> users = new Dictionary<string, Socket>();
 
 
@@ -28,13 +38,21 @@ namespace ServerNamespace
         private RegisterRequestHandler registerHandler;
         private LogOutRequestHandler logoutHandler;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Server"/> class with the specified port number.
+        /// </summary>
+        /// <param name="port">The port number on which the server will listen for client connections.</param>
         public Server(int port)
         {
+            portNumber = port;
             serverSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            serverSocket.Bind(new IPEndPoint(IPAddress.Any, port));
+            serverSocket.Bind(new IPEndPoint(IPAddress.Any, portNumber));
             serverSocket.Listen(10);
         }
 
+        /// <summary>
+        /// Starts the server and begins listening for client connections.
+        /// </summary>
         public void ServerStart()
         {
             chatHandler = new MessageRequestHandler();
@@ -46,7 +64,7 @@ namespace ServerNamespace
             loginHandler.SetNext(registerHandler);
             registerHandler.SetNext(logoutHandler);
 
-            Console.WriteLine("Server started...");
+            Console.WriteLine($"Server started at port {portNumber}");
 
             // Start a background thread to process messages
             Thread processingThread = new Thread(() => ProcessMessages());
@@ -60,6 +78,10 @@ namespace ServerNamespace
             }
         }
 
+        /// <summary>
+        /// Handles client connections and processes incoming messages.
+        /// </summary>
+        /// <param name="clientSocket">The socket associated with the connected client.</param>
         private void HandleClient(Socket clientSocket)
         {
             byte[] buffer = new byte[1024];
@@ -69,14 +91,40 @@ namespace ServerNamespace
                 try
                 {
                     int receivedBytes = clientSocket.Receive(buffer);
+                    if (receivedBytes == 0)
+                    {
+                        Console.WriteLine($"received 0 bytes");
+                        break; // Client disconnected
+                    }
+
                     string receivedText = Encoding.UTF8.GetString(buffer, 0, receivedBytes);
-                    Message message = Message.FromJson(receivedText);
+                    Message message;
+                    try
+                    {
+                        message = Message.FromJson(receivedText);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Invalid JSON: {ex.Message}");
+                        continue;
+                    }
 
                     lock (users)
                     {
                         if (!users.ContainsKey(message.Sender))
                         {
+                            //users[message.Sender] = clientSocket;
                             users.Add(message.Sender, clientSocket);
+                            Console.WriteLine(string.Join(", ", users.Select(kv => $"{kv.Key}")));
+                        }
+                        else
+                        {
+                            if (message.Type == MessageType.Login)
+                            {
+
+                                Message msg = new Message(MessageType.ErrorLogin, "", message.Sender, new Dictionary<string, string> { { "Error message", "User deja autentificat!" } });
+                                clientSocket.Send(Encoding.UTF8.GetBytes(Message.ToJson(msg)));
+                            }
                         }
                     }
 
@@ -85,12 +133,21 @@ namespace ServerNamespace
                 }
                 catch (SocketException e)
                 {
-                    Console.WriteLine(e.Message);
-                    return;
+                    Console.WriteLine($"ia de aici tata");
+                    Console.WriteLine($"SocketException: {e.Message}");
+                    break;
+                }
+                catch (ObjectDisposedException e)
+                {
+                    Console.WriteLine($"ObjectDisposedException: {e.Message}");
+                    break;
                 }
             }
         }
 
+        /// <summary>
+        /// Processes messages in the message queue.
+        /// </summary>
         private void ProcessMessages()
         {
             while (true)

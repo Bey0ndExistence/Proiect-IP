@@ -1,4 +1,12 @@
-﻿using System;
+﻿/// <file>
+/// <author>Andrei Zacordoneț</author>
+/// <summary>
+/// This file contains the implementation of the LogInRequestHandler class,
+/// which handles login requests from users.
+/// </summary>
+/// </file>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,10 +19,22 @@ using Persistance.Exceptions;
 
 namespace ServerRequestHandler
 {
+    /// <summary>
+    /// Handles login requests from users.
+    /// </summary>
     public class LogInRequestHandler : RequestHandler
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogInRequestHandler"/> class.
+        /// </summary>
+        /// <param name="next">The next handler in the chain.</param>
         public LogInRequestHandler(RequestHandler next = null) : base(next) { }
 
+        /// <summary>
+        /// Handles the given message.
+        /// </summary>
+        /// <param name="message">The message to handle.</param>
+        /// <param name="users">The dictionary of connected users.</param>
         public override void Handle(Message message, Dictionary<string, Socket> users)
         {
             if (message.Type == MessageType.Login)

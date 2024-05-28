@@ -1,4 +1,12 @@
-﻿using System;
+﻿/// <file>
+/// <author>Andrei Zacordoneț</author>
+/// <summary>
+/// This file contains the implementation of the LogOutRequestHandler class,
+/// which handles logout requests from users.
+/// </summary>
+/// </file>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,11 +17,22 @@ using MessageNamespace;
 
 namespace ServerRequestHandler
 {
+    /// <summary>
+    /// Handles logout requests from users.
+    /// </summary>
     public class LogOutRequestHandler : RequestHandler
     {
-        static string TAG = "LOG OUT REQUEST HANDLER";
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LogOutRequestHandler"/> class.
+        /// </summary>
+        /// <param name="next">The next handler in the chain.</param>
         public LogOutRequestHandler(RequestHandler next = null) : base(next) { }
 
+        /// <summary>
+        /// Handles the given message.
+        /// </summary>
+        /// <param name="message">The message to handle.</param>
+        /// <param name="users">The dictionary of connected users.</param>
         public override void Handle(Message message, Dictionary<string, Socket> users)
         {
             if (message.Type == MessageType.Logout)
@@ -61,6 +80,10 @@ namespace ServerRequestHandler
             }
         }
 
+        /// <summary>
+        /// Broadcasts the updated user list to all connected users.
+        /// </summary>
+        /// <param name="users">The dictionary of connected users.</param>
         private void BroadcastUpdatedUserList(Dictionary<string, Socket> users)
         {
             var userList = string.Join(", ", users.Keys.ToList());
@@ -81,6 +104,10 @@ namespace ServerRequestHandler
             }
         }
 
+        /// <summary>
+        /// Handles client disconnection by shutting down and closing the socket.
+        /// </summary>
+        /// <param name="clientSocket">The socket of the client to disconnect.</param>
         public void HandleClientDisconnection(Socket clientSocket)
         {
             try
