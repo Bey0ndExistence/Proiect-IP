@@ -1,8 +1,28 @@
-﻿using MySql.Data.MySqlClient;
+﻿/**************************************************************************
+ *                                                                        *
+ *  File:        DatabaseAccess.cs                                        *
+ *  Copyright:   (c) 2024, Moloman Laurentiu-Ionut                        *
+ *  E-mail:      laurentiu-ionut.moloman@student.tuiasi.ro                *
+ *  Website:                                                              *
+ *  Description: Persistance Layer that manages the database.             *
+ *                                                                        *
+ *  This program is free software; you can redistribute it and/or modify  *
+ *  it under the terms of the GNU General Public License as published by  *
+ *  the Free Software Foundation. This program is distributed in the      *
+ *  hope that it will be useful, but WITHOUT ANY WARRANTY; without even   *
+ *  the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR   *
+ *  PURPOSE. See the GNU General Public License for more details.         *
+ *                                                                        *
+ **************************************************************************/
+
+
+
+
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using  Persistance.Exceptions;
+using Persistance.Exceptions;
 using System.Security.Cryptography;
 using System.Text;
 using ZstdSharp;
@@ -20,10 +40,12 @@ namespace Persistance
         // Static method to get the singleton instance
         public static DatabaseAccess Instance => _instance.Value;
 
-      
+        /// <summary>
+        /// Creates the userdata table if it does not exist.
+        /// </summary>
+        /// <returns>True if the table is created successfully, otherwise throws an exception.</returns>
         public bool CreateUserTable()
         {
-
             string createTableQuery = @"
                 CREATE TABLE IF NOT EXISTS userdata (
                     ID INT AUTO_INCREMENT PRIMARY KEY,
@@ -47,16 +69,18 @@ namespace Persistance
                     connection.Close();
                     return true;
                 }
-                catch (MySqlException ex)
+                catch (MySqlException)
                 {
                     throw new CreateTableException("An error occurred while creating the userdata table");
-                    
                 }
             }
         }
 
-        // Existing methods and private helper methods...
-        public  bool CreateUsersLogs()
+        /// <summary>
+        /// Creates the userslogs table if it does not exist.
+        /// </summary>
+        /// <returns>True if the table is created successfully, otherwise throws an exception.</returns>
+        public bool CreateUsersLogs()
         {
             string connectionString = "server=localhost;uid=root;pwd=root;database=userdata";
             string createTableQuery = @"
@@ -77,12 +101,18 @@ namespace Persistance
                     connection.Close();
                     return true;
                 }
-                catch (MySqlException ex)
+                catch (MySqlException)
                 {
-                    throw new CreateTableException("An error occurred while creating the userlogs table");
+                    throw new CreateTableException("An error occurred while creating the userslogs table");
                 }
             }
         }
+
+        /// <summary>
+        /// Connects to the database.
+        /// </summary>
+        /// <param name="connection">The MySQL connection object.</param>
+        /// <returns>True if connection is successful, otherwise throws an exception.</returns>
         private bool ConnectDB(out MySqlConnection connection)
         {
             connection = new MySqlConnection(_connectionString);
@@ -94,10 +124,14 @@ namespace Persistance
             catch (MySqlException)
             {
                 throw new CreateTableException("An error occurred while connecting to userdata database");
-            
             }
         }
 
+        /// <summary>
+        /// Disconnects from the database.
+        /// </summary>
+        /// <param name="connection">The MySQL connection object.</param>
+        /// <returns>True if disconnection is successful, otherwise throws an exception.</returns>
         private bool DisconnectDB(MySqlConnection connection)
         {
             try
@@ -107,9 +141,15 @@ namespace Persistance
             }
             catch (MySqlException)
             {
-                throw new CreateTableException("An error occurred while disconnecting to userdata database");
+                throw new CreateTableException("An error occurred while disconnecting from userdata database");
             }
         }
+
+        /// <summary>
+        /// Hashes the password using SHA-256.
+        /// </summary>
+        /// <param name="password">The plain text password.</param>
+        /// <returns>The hashed password as a hexadecimal string.</returns>
         private string HashPassword(string password)
         {
             using (SHA256 sha256 = SHA256.Create())
@@ -124,6 +164,11 @@ namespace Persistance
             }
         }
 
+        /// <summary>
+        /// Registers a new user in the database.
+        /// </summary>
+        /// <param name="userDict">Dictionary containing user details.</param>
+        /// <returns>True if the user is registered successfully, otherwise throws an exception.</returns>
         public bool RegisterUser(Dictionary<string, string> userDict)
         {
             User user = new User
@@ -135,9 +180,9 @@ namespace Persistance
                 Lastname = userDict["lastname"],
                 PhoneNumber = userDict["phone_number"]
             };
-           
+
             MySqlConnection connection;
-         
+
             try
             {
                 ConnectDB(out connection);
@@ -147,10 +192,12 @@ namespace Persistance
                 throw new DatabaseConnectionException(ex.Message);
             }
 
+            MySqlTransaction transaction = connection.BeginTransaction();
+
             string query = "INSERT INTO userdata (username, password, email, firstname, lastname, phone_number) " +
                            "VALUES (@username, @password, @Email, @Firstname, @Lastname, @PhoneNumber)";
 
-            using (MySqlCommand cmd = new MySqlCommand(query, connection))
+            using (MySqlCommand cmd = new MySqlCommand(query, connection, transaction))
             {
                 cmd.Parameters.AddWithValue("@username", user.Username);
                 cmd.Parameters.AddWithValue("@password", user.Password);
@@ -162,17 +209,27 @@ namespace Persistance
                 try
                 {
                     cmd.ExecuteNonQuery();
+                    transaction.Commit(); // Commit the transaction if the query is successful
                 }
-                catch (MySqlException)
-                { 
-                    throw new UserRegisterException(user.Password);
-
+                catch (MySqlException ex)
+                {
+                    transaction.Rollback(); // Rollback the transaction if an error occurs
+                    throw new UserRegisterException("An error occurred while registering the user: " + ex.Message);
+                }
+                finally
+                {
+                    DisconnectDB(connection);
                 }
             }
 
-            DisconnectDB(connection);
             return true;
         }
+
+        /// <summary>
+        /// Deletes a user's information from the database.
+        /// </summary>
+        /// <param name="username">The username of the user to delete.</param>
+        /// <returns>True if the user is deleted successfully, otherwise throws an exception.</returns>
         public bool DeleteUserInfo(string username)
         {
             string query = "DELETE FROM userdata WHERE username = @username";
@@ -199,7 +256,7 @@ namespace Persistance
                         throw new UserDeletionException("No rows were deleted for the user.", username);
                     }
                 }
-                catch (MySqlException ex)
+                catch (MySqlException)
                 {
                     DisconnectDB(connection);
                     throw new UserDeletionException("An error occurred while deleting user information.", username);
@@ -210,6 +267,12 @@ namespace Persistance
             return true;
         }
 
+        /// <summary>
+        /// Updates a user's information in the database.
+        /// </summary>
+        /// <param name="username">The username of the user to update.</param>
+        /// <param name="updatedFields">Dictionary containing the fields to update and their new values.</param>
+        /// <returns>True if the user information is updated successfully, otherwise throws an exception.</returns>
         public bool UpdateUserInfo(string username, Dictionary<string, string> updatedFields)
         {
             StringBuilder setFields = new StringBuilder();
@@ -247,7 +310,7 @@ namespace Persistance
                         throw new UserUpdateException("No rows were updated for the user " + username);
                     }
                 }
-                catch (MySqlException ex)
+                catch (MySqlException)
                 {
                     DisconnectDB(connection);
                     throw new UserUpdateException("An error occurred while updating user information for the user " + username);
@@ -257,6 +320,13 @@ namespace Persistance
             DisconnectDB(connection);
             return true;
         }
+
+        /// <summary>
+        /// Retrieves user information from the database.
+        /// </summary>
+        /// <param name="username">The username of the user to retrieve information for.</param>
+        /// <param name="fields">List of fields to retrieve.</param>
+        /// <returns>A dictionary containing the user information.</returns>
         public Dictionary<string, string> GetUserInfo(string username, List<string> fields)
         {
             string selectFields = string.Join(", ", fields);
@@ -288,7 +358,7 @@ namespace Persistance
                         }
                     }
                 }
-                catch (MySqlException ex)
+                catch (MySqlException)
                 {
                     throw new UserReadInformationException("An error occurred while retrieving user information.", username);
                 }
@@ -298,6 +368,12 @@ namespace Persistance
             return userInfo;
         }
 
+        /// <summary>
+        /// Retrieves conversation logs between two users.
+        /// </summary>
+        /// <param name="username1">The first username.</param>
+        /// <param name="username2">The second username.</param>
+        /// <returns>The conversation logs as a string.</returns>
         public string GetLogs(string username1, string username2)
         {
             MySqlConnection connection;
@@ -353,6 +429,13 @@ namespace Persistance
             return conversation;
         }
 
+        /// <summary>
+        /// Saves conversation logs between two users.
+        /// </summary>
+        /// <param name="username1">The first username.</param>
+        /// <param name="username2">The second username.</param>
+        /// <param name="conversation">The conversation logs to save.</param>
+        /// <returns>True if the logs are saved successfully, otherwise returns false.</returns>
         public bool SaveLogs(string username1, string username2, string conversation)
         {
             MySqlConnection connection;
@@ -399,6 +482,11 @@ namespace Persistance
             return true;
         }
 
+        /// <summary>
+        /// Checks the login credentials of a user.
+        /// </summary>
+        /// <param name="credentials">Dictionary containing username and password.</param>
+        /// <returns>True if the credentials are correct, otherwise throws an exception.</returns>
         public bool LoginCheck(Dictionary<string, string> credentials)
         {
             string username = credentials["username"];
@@ -427,14 +515,18 @@ namespace Persistance
 
             DisconnectDB(connection);
 
-            if(isAuthenticated)
+            if (isAuthenticated)
                 return true;
             else
                 throw new LoginException("Wrong credentials");
         }
 
-
-
+        /// <summary>
+        /// Retrieves the user ID for a given username.
+        /// </summary>
+        /// <param name="username">The username to retrieve the ID for.</param>
+        /// <param name="connection">The MySQL connection object.</param>
+        /// <returns>The user ID if found, otherwise returns -1.</returns>
         private int GetUserId(string username, MySqlConnection connection)
         {
             string query = "SELECT ID FROM userdata WHERE username = @username";
@@ -457,6 +549,9 @@ namespace Persistance
         }
     }
 
+    /// <summary>
+    /// Represents a user in the system.
+    /// </summary>
     public class User
     {
         public string Username { get; set; }
