@@ -41,6 +41,10 @@ namespace ChatApp
 
         private void buttonChatWithActiveUser_Click(object sender, EventArgs e)
         {
+            if (selectedActiveUser!= null && selectedActiveUser.EndsWith(" *"))
+            {
+                listBoxActiveUsers.Items[listBoxActiveUsers.Items.IndexOf(selectedActiveUser)] = selectedActiveUser.Substring(0, selectedActiveUser.Length - 2);
+            }
             SendActiveUser?.Invoke(this, selectedActiveUser);
             // when opening a new chat load the file into listBoxMessages
             LoadChat?.Invoke(this, EventArgs.Empty);
@@ -58,6 +62,34 @@ namespace ChatApp
         public void updateLoggedUsername(string username)
         {
             labelLoggedUsername.Text = "You are logged in as " + username;
+        }
+
+        public void messageNotification(string sender)
+        {
+            if (selectedActiveUser != null && !selectedActiveUser.EndsWith(" *"))
+            {
+                var index = listBoxActiveUsers.Items.IndexOf(sender);
+                if (index >= 0)
+                    listBoxActiveUsers.Items[index] += " *";
+            }
+        }
+
+        public void removeMessageNotification()
+        {
+            if (selectedActiveUser != null && selectedActiveUser.EndsWith(" *"))
+            {
+                var index = listBoxActiveUsers.Items.IndexOf(selectedActiveUser);
+                if (index >= 0)
+                    listBoxActiveUsers.Items[index] = selectedActiveUser.Substring(0, selectedActiveUser.Length - 2);
+            }
+        }
+
+        public void resetSelectedActiveUser()
+        {
+            if (selectedActiveUser != null)
+            {
+                selectedActiveUser = null;
+            }
         }
     }
 }

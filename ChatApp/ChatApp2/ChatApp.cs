@@ -35,6 +35,8 @@ namespace ChatApp
             registerControl.RegisterDataSend += RegisterDataSendClicked;
             activeUsersControl.LogOut += LogOutDataSendClicked;
 
+            chatControl.RemoveMessageNotification += RemoveNotif;
+
             // new method
             // chatControl.SaveChat += SaveToFile;
             activeUsersControl.LoadChat += LoadFromFile;
@@ -200,6 +202,25 @@ namespace ChatApp
                     {
                         string[] users = msg.Body["userList"].Split(new string[] { ", " }, StringSplitOptions.None);
                         activeUsersControl.UpdateActiveUsers(users);
+                        if (_currentActiveUser != null)
+                        {
+                            if (!msg.Body["userList"].Contains(_currentActiveUser))
+                            {
+                                loginControl.Visible = false;
+                                activeUsersControl.Visible = true;
+                                registerControl.Visible = false;
+                                chatControl.Visible = false;
+
+                                MessageBox.Show($"Userul {_currentActiveUser} s-a deconectat!");
+                                _currentActiveUser = null;
+
+                                Invoke((Action)(() =>
+                                {
+                                    activeUsersControl.resetSelectedActiveUser();
+                                }));
+
+                            }
+                        }
                     }));
                 }
                 else
@@ -209,7 +230,10 @@ namespace ChatApp
                     chatControl.ReceiveMessage(msg.Sender, msg.Body["message"])));*/
                     // new method 
                     Invoke((Action)(() =>
-                    chatControl.ReceiveMessage(msg.Sender, msg.Receiver, msg.Body["message"])));
+                    {
+                        chatControl.ReceiveMessage(msg.Sender, msg.Receiver, msg.Body["message"]);
+                        activeUsersControl.messageNotification(msg.Sender);
+                    }));
                     //MessageBox.Show($"{msg.Body["message"]}");
                 }
                 await Task.Delay(100);
@@ -236,6 +260,12 @@ namespace ChatApp
             Console.WriteLine($"{_name}-{_currentActiveUser}.txt");
             Invoke((Action)(() =>
                     chatControl.LoadListBoxFromFile(_name, _currentActiveUser)));
+        }
+
+        private void RemoveNotif(object sender, EventArgs e)
+        {
+            Invoke((Action)(() =>
+                    activeUsersControl.removeMessageNotification()));
         }
     }
 }

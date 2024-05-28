@@ -5,6 +5,8 @@ using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
+using MessageNamespace;
+
 namespace ChatApp
 {
     public partial class ChatControl : UserControl
@@ -17,6 +19,8 @@ namespace ChatApp
         */
         public event EventHandler LoadChat;
         public event EventHandler SaveChat;
+
+        public event EventHandler RemoveMessageNotification;
         public ChatControl()
         {
             InitializeComponent();
@@ -69,6 +73,8 @@ namespace ChatApp
             SaveChat?.Invoke(this, EventArgs.Empty);
             // Raise the SwitchToLogin event
             SwitchToActiveUsers?.Invoke(this, EventArgs.Empty);
+
+            RemoveMessageNotification?.Invoke(this, EventArgs.Empty);
         }
 
         /*public void ReceiveMessage(string sender, string message)
