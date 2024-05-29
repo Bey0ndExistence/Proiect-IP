@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\galat\\Desktop\\Proiect-IP\\ServerApp\\",
+  "WorkspaceRootPath": "D:\\Facultate\\An3_Sem2\\IP\\Proiect-IP\\ServerApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5A4A0B08-BEA4-414B-9154-19209788C6F0}|ServerApp.csproj|c:\\users\\galat\\desktop\\proiect-ip\\serverapp\\serverprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{5A4A0B08-BEA4-414B-9154-19209788C6F0}|ServerApp.csproj|d:\\facultate\\an3_sem2\\ip\\proiect-ip\\serverapp\\serverprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{5A4A0B08-BEA4-414B-9154-19209788C6F0}|ServerApp.csproj|solutionrelative:serverprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -20,11 +20,11 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "ServerProgram.cs",
-              "DocumentMoniker": "C:\\Users\\galat\\Desktop\\Proiect-IP\\ServerApp\\ServerProgram.cs",
+              "DocumentMoniker": "D:\\Facultate\\An3_Sem2\\IP\\Proiect-IP\\ServerApp\\ServerProgram.cs",
               "RelativeDocumentMoniker": "ServerProgram.cs",
-              "ToolTip": "C:\\Users\\galat\\Desktop\\Proiect-IP\\ServerApp\\ServerProgram.cs",
+              "ToolTip": "D:\\Facultate\\An3_Sem2\\IP\\Proiect-IP\\ServerApp\\ServerProgram.cs",
               "RelativeToolTip": "ServerProgram.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAAAAAA",
+              "ViewState": "AQIAABIAAAAAAAAAAAAAABwAAAAXAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-05-28T22:04:56.777Z",
               "EditorCaption": ""
