@@ -1,0 +1,4 @@
+Salut
+Ai facut documentatia la proiect la IP?
+Dar diagramele UML?
+[Andrei]: Tu te ocupi de documentatie amice, eu m-am ocupat de diagramele UML
