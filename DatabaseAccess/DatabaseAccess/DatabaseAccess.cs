@@ -171,6 +171,22 @@ namespace Persistance
         /// <returns>True if the user is registered successfully, otherwise throws an exception.</returns>
         public bool RegisterUser(Dictionary<string, string> userDict)
         {
+
+            // Check for required fields
+            if (!userDict.ContainsKey("username") || userDict["username"] == null)
+                throw new UserRegisterException("Username cannot be null.");
+            if (!userDict.ContainsKey("password") || userDict["password"] == null)
+                throw new UserRegisterException("Password cannot be null.");
+            if (!userDict.ContainsKey("email") || userDict["email"] == null)
+                throw new UserRegisterException("Email cannot be null.");
+            if (!userDict.ContainsKey("firstname") || userDict["firstname"] == null)
+                throw new UserRegisterException("Firstname cannot be null.");
+            if (!userDict.ContainsKey("lastname") || userDict["lastname"] == null)
+                throw new UserRegisterException("Lastname cannot be null.");
+            if (!userDict.ContainsKey("phone_number") || userDict["phone_number"] == null)
+                throw new UserRegisterException("Phone number cannot be null.");
+
+
             User user = new User
             {
                 Username = userDict["username"],
@@ -180,6 +196,20 @@ namespace Persistance
                 Lastname = userDict["lastname"],
                 PhoneNumber = userDict["phone_number"]
             };
+
+
+
+            // Validate phone number
+            if (!System.Text.RegularExpressions.Regex.IsMatch(user.PhoneNumber, @"^\d+$"))
+            {
+                throw new UserRegisterException("The phone number must contain only digits.");
+            }
+
+            // Validate email
+            if (!System.Text.RegularExpressions.Regex.IsMatch(user.Email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            {
+                throw new UserRegisterException("The email address is not in a valid format.");
+            }
 
             MySqlConnection connection;
 
@@ -224,6 +254,7 @@ namespace Persistance
 
             return true;
         }
+
 
         /// <summary>
         /// Deletes a user's information from the database.
@@ -275,6 +306,30 @@ namespace Persistance
         /// <returns>True if the user information is updated successfully, otherwise throws an exception.</returns>
         public bool UpdateUserInfo(string username, Dictionary<string, string> updatedFields)
         {
+            // Check for required fields and validate input
+            if (updatedFields.ContainsKey("username") && (updatedFields["username"] == null || updatedFields["username"].Trim() == ""))
+                throw new UserUpdateException("Username cannot be null or empty.");
+            if (updatedFields.ContainsKey("password") && (updatedFields["password"] == null || updatedFields["password"].Trim() == ""))
+                throw new UserUpdateException("Password cannot be null or empty.");
+            if (updatedFields.ContainsKey("email"))
+            {
+                if (updatedFields["email"] == null || updatedFields["email"].Trim() == "")
+                    throw new UserUpdateException("Email cannot be null or empty.");
+                if (!System.Text.RegularExpressions.Regex.IsMatch(updatedFields["email"], @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                    throw new UserUpdateException("The email address is not in a valid format.");
+            }
+            if (updatedFields.ContainsKey("firstname") && (updatedFields["firstname"] == null || updatedFields["firstname"].Trim() == ""))
+                throw new UserUpdateException("Firstname cannot be null or empty.");
+            if (updatedFields.ContainsKey("lastname") && (updatedFields["lastname"] == null || updatedFields["lastname"].Trim() == ""))
+                throw new UserUpdateException("Lastname cannot be null or empty.");
+            if (updatedFields.ContainsKey("phone_number"))
+            {
+                if (updatedFields["phone_number"] == null || updatedFields["phone_number"].Trim() == "")
+                    throw new UserUpdateException("Phone number cannot be null or empty.");
+                if (!System.Text.RegularExpressions.Regex.IsMatch(updatedFields["phone_number"], @"^\d+$"))
+                    throw new UserUpdateException("The phone number must contain only digits.");
+            }
+
             StringBuilder setFields = new StringBuilder();
             foreach (var field in updatedFields)
             {
@@ -395,7 +450,7 @@ namespace Persistance
                 return null;
             }
 
-            string userIds = id1 < id2 ? $"{id1}{id2}" : $"{id2}{id1}";
+            string userIds = id1 < id2 ? $"{id1},{id2}" : $"{id2},{id1}";
             string query = "SELECT conversation FROM userslogs WHERE users_IDs = @userIds";
 
             string conversation = null;

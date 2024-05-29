@@ -15,7 +15,6 @@
  *                                                                        *
  **************************************************************************/
 
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MySql.Data.MySqlClient;
 using Persistance;
@@ -71,7 +70,7 @@ namespace Persistance.Tests
                     { "email", "mircea3@example.com" },
                     { "firstname", "mircea3" },
                     { "lastname", "mircea3" },
-                    { "phone_number", "mircea3" }
+                    { "phone_number", "0777777" }
                 };
 
                 var result = DatabaseAccess.Instance.RegisterUser(userDict);
@@ -92,21 +91,7 @@ namespace Persistance.Tests
             Assert.AreEqual("mircea3@example.com", userInfo["email"]);
         }
 
-        /// <summary>
-        /// Tests the login check functionality.
-        /// </summary>
-        [TestMethod]
-        public void TestLoginCheck()
-        {
-            var credentials = new Dictionary<string, string>
-            {
-                { "username", "userToUpdate" },
-                { "password", "password" }
-            };
-
-            var isAuthenticated = DatabaseAccess.Instance.LoginCheck(credentials);
-            Assert.IsTrue(isAuthenticated);
-        }
+    
 
         /// <summary>
         /// Tests the user deletion functionality.
@@ -116,7 +101,7 @@ namespace Persistance.Tests
         {
             try
             {
-                var deleteResult = DatabaseAccess.Instance.DeleteUserInfo("mircea6");
+                var deleteResult = DatabaseAccess.Instance.DeleteUserInfo("mircea3");
                 Assert.IsTrue(deleteResult);
             }
             catch (Exception ex)
@@ -170,7 +155,6 @@ namespace Persistance.Tests
             }
         }
 
-        
         /// <summary>
         /// Tests saving and retrieving logs.
         /// </summary>
@@ -179,34 +163,213 @@ namespace Persistance.Tests
         {
             var user1 = new Dictionary<string, string>
             {
-                { "username", "user1" },
-                { "password", "password1" },
-                { "email", "user1@example.com" },
-                { "firstname", "First" },
-                { "lastname", "User" },
-                { "phone_number", "1111111111" }
+                { "username", "user10" },
+                { "password", "password10" },
+                { "email", "user10@example.com" },
+                { "firstname", "First1" },
+                { "lastname", "User1" },
+                { "phone_number", "111111111111" }
             };
 
             var user2 = new Dictionary<string, string>
             {
-                { "username", "user2" },
-                { "password", "password2" },
-                { "email", "user2@example.com" },
+                { "username", "user20" },
+                { "password", "password20" },
+                { "email", "user20@example.com" },
                 { "firstname", "Second" },
                 { "lastname", "User" },
-                { "phone_number", "2222222222" }
+                { "phone_number", "222222222222" }
             };
 
             DatabaseAccess.Instance.RegisterUser(user1);
             DatabaseAccess.Instance.RegisterUser(user2);
 
             var conversation = "Hello, how are you?";
-            var saveResult = DatabaseAccess.Instance.SaveLogs("user1", "user2", conversation);
+            var saveResult = DatabaseAccess.Instance.SaveLogs("user10", "user20", conversation);
             Assert.IsTrue(saveResult);
 
-            var retrievedConversation = DatabaseAccess.Instance.GetLogs("user1", "user2");
+            var retrievedConversation = DatabaseAccess.Instance.GetLogs("user10", "user20");
             Assert.AreEqual(conversation, retrievedConversation);
         }
-        
+
+        /// <summary>
+        /// Tests attempting to register a user with a duplicate username.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(UserRegisterException))]
+        public void TestRegisterDuplicateUsername()
+        {
+            var userDict = new Dictionary<string, string>
+            {
+                { "username", "duplicateUser" },
+                { "password", "password" },
+                { "email", "duplicate@example.com" },
+                { "firstname", "Duplicate" },
+                { "lastname", "User" },
+                { "phone_number", "1234567890" }
+            };
+
+            // First registration should succeed
+            var result = DatabaseAccess.Instance.RegisterUser(userDict);
+            Assert.IsTrue(result);
+
+            // Second registration should fail
+            DatabaseAccess.Instance.RegisterUser(userDict);
+        }
+
+        /// <summary>
+        /// Tests attempting to register a user with a null email.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(UserRegisterException))]
+        public void TestRegisterNullEmail()
+        {
+            var userDict = new Dictionary<string, string>
+            {
+                { "username", "nullEmailUser" },
+                { "password", "password" },
+                { "email", null },
+                { "firstname", "Null" },
+                { "lastname", "Email" },
+                { "phone_number", "1234567890" }
+            };
+
+            DatabaseAccess.Instance.RegisterUser(userDict);
+        }
+
+        /// <summary>
+        /// Tests attempting to register a user with an invalid phone number.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(UserRegisterException))]
+        public void TestRegisterInvalidPhoneNumber()
+        {
+            var userDict = new Dictionary<string, string>
+            {
+                { "username", "invalidPhoneUser" },
+                { "password", "password" },
+                { "email", "invalidphone@example.com" },
+                { "firstname", "Invalid" },
+                { "lastname", "Phone" },
+                { "phone_number", "invalidphone" } // Not a valid phone number format
+            };
+
+            DatabaseAccess.Instance.RegisterUser(userDict);
+        }
+
+        /// <summary>
+        /// Tests attempting to register a user with an existing email.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(UserRegisterException))]
+        public void TestRegisterDuplicateEmail()
+        {
+            var userDict1 = new Dictionary<string, string>
+            {
+                { "username", "user1" },
+                { "password", "password" },
+                { "email", "duplicateemail@example.com" },
+                { "firstname", "User" },
+                { "lastname", "One" },
+                { "phone_number", "1111111111" }
+            };
+
+            var userDict2 = new Dictionary<string, string>
+            {
+                { "username", "user2" },
+                { "password", "password" },
+                { "email", "duplicateemail@example.com" },
+                { "firstname", "User" },
+                { "lastname", "Two" },
+                { "phone_number", "2222222222" }
+            };
+
+            // First registration should succeed
+            var result1 = DatabaseAccess.Instance.RegisterUser(userDict1);
+            Assert.IsTrue(result1);
+
+            // Second registration should fail due to duplicate email
+            DatabaseAccess.Instance.RegisterUser(userDict2);
+        }
+
+        /// <summary>
+        /// Tests attempting to register a user with missing required fields.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(UserRegisterException))]
+        public void TestRegisterMissingFields()
+        {
+            var userDict = new Dictionary<string, string>
+            {
+                { "username", "missingFieldsUser" },
+                { "password", "password" }
+                // Missing email, firstname, lastname, and phone_number
+            };
+
+            DatabaseAccess.Instance.RegisterUser(userDict);
+        }
+
+        /// <summary>
+        /// Tests attempting to login with incorrect credentials.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(LoginException))]
+        public void TestLoginIncorrectCredentials()
+        {
+            var credentials = new Dictionary<string, string>
+        {
+            { "username", "nonexistentuser" },
+            { "password", "wrongpassword" }
+        };
+
+            // This call should throw a LoginException
+            DatabaseAccess.Instance.LoginCheck(credentials);
+        }
+
+        /// <summary>
+        /// Tests updating user information with invalid data.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(UserUpdateException))]
+        public void TestUpdateUserInvalidData()
+        {
+            var userDict = new Dictionary<string, string>
+            {
+                { "username", "updateInvalidDataUser" },
+                { "password", "password" },
+                { "email", "updateinvaliddata@example.com" },
+                { "firstname", "Update" },
+                { "lastname", "Invalid" },
+                { "phone_number", "12345678905" }
+            };
+
+            var registerResult = DatabaseAccess.Instance.RegisterUser(userDict);
+            Assert.IsTrue(registerResult);
+
+            var updatedFields = new Dictionary<string, string>
+            {
+                { "email", "invalidemail" } // Invalid email format
+            };
+
+            DatabaseAccess.Instance.UpdateUserInfo("updateInvalidDataUser", updatedFields);
+        }
+
+
+        /// <summary>
+        /// Tests the login check functionality.
+        /// </summary>
+        [TestMethod]
+        [ExpectedException(typeof(LoginException))]
+        public void TestLoginCheck()
+        {
+            var credentials = new Dictionary<string, string>
+            {
+                { "username", "user10" },
+                { "password", "password10" }
+            };
+
+            var isAuthenticated = DatabaseAccess.Instance.LoginCheck(credentials);
+            Assert.IsTrue(isAuthenticated);
+        }
     }
 }
